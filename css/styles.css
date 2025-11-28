@@ -1,0 +1,14 @@
+#quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.list-group-item {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.list-group-item-success,
+.list-group-item-danger {
+    font-weight: bold;
+}
