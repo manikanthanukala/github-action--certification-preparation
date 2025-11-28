@@ -139,6 +139,11 @@ function showSection(id) {
   document.getElementById(id).classList.remove('d-none');
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.querySelector(`a[href="#${id}"]`).classList.add('active');
+  if (id === 'quiz') {
+    cur = 0;
+    score = 0;
+    loadQuestion();
+  }
 }
 
 document.querySelectorAll('.nav-link').forEach(link => {
@@ -147,6 +152,10 @@ document.querySelectorAll('.nav-link').forEach(link => {
     showSection(link.getAttribute('href').substring(1));
   });
 });
+
+// Home buttons
+document.querySelector('a[href="#guide"]').addEventListener('click', e => { e.preventDefault(); showSection('guide'); });
+document.querySelector('a[href="#quiz"]').addEventListener('click', e => { e.preventDefault(); showSection('quiz'); });
 
 function loadQuestion() {
   const ques = questions[cur];
@@ -197,9 +206,8 @@ nextBtn.onclick = () => {
   }
 };
 
-// Start
+// Start on home
 showSection('home');
-loadQuestion();
 </script>
 </body>
 </html>
