@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GitHub Actions Certification Prep (GH-200)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body { background:#f8f9fa; padding-top:80px; }
+    .nav-link.active { font-weight:bold; }
+    .option-btn { margin:8px 0; text-align:left; }
+    .alert code { background:#e9ecef; padding:2px 6px; border-radius:4px; }
+    footer { margin-top:100px; padding:20px; background:#343a40; color:white; text-align:center; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">GH-200 Prep</a>
+    <div class="navbar-nav">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#guide">Study Guide</a>
+      <a class="nav-link" href="#quiz">Quiz</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HOME -->
+  <section id="home" class="text-center py-5">
+    <h1 class="display-5">GitHub Actions Certification Prep</h1>
+    <p class="lead">Free practice site for the official GitHub Actions certification (GH-200)</p>
+    <a href="#guide" class="btn btn-primary btn-lg mx-2">Study Guide</a>
+    <a href="#quiz" class="btn btn-success btn-lg mx-2">Start Quiz</a>
+  </section>
+
+  <!-- STUDY GUIDE -->
+  <section id="guide" class="my-5 d-none">
+    <h2>Study Guide – Exam Domains</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>1. Author & Maintain Workflows (40%)</h4>
+        <ul>
+          <li>Triggers: push, pull_request, schedule, workflow_dispatch, repository_dispatch</li>
+          <li>YAML syntax, jobs → steps, matrix, needs, if:</li>
+          <li>Secrets, GITHUB_TOKEN permissions, environment variables</li>
+          <li>Artifacts, caching, reusable workflows</li>
+          <li>Service containers, CodeQL, releases</li>
+        </ul>
+
+        <h4>2. Consume Workflows (20%)</h4>
+        <ul>
+          <li>View logs, debug logging, status badges</li>
+          <li>Environments, required reviewers, branch protection</li>
+          <li>Download/upload artifacts</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <h4>3. Author & Maintain Actions (25%)</h4>
+        <ul>
+          <li>JavaScript vs Docker vs Composite actions</li>
+          <li>action.yml inputs/outputs</li>
+          <li>Workflow commands (::set-output, ::add-mask, etc.)</li>
+        </ul>
+
+        <h4>4. Enterprise Management (15%)</h4>
+        <ul>
+          <li>Self-hosted runners & runner groups</li>
+          <li>Organization secrets & policies</li>
+          <li>Reusable workflows & starter workflows</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="my-5 d-none">
+    <h2 class="text-center">Interactive Practice Quiz</h2>
+    <div id="quiz-container" class="card shadow mx-auto" style="max-width:800px;">
+      <div class="card-body">
+        <div class="mb-3">
+          Question <span id="current">1</span> of <span id="total">10</span>
+          <div class="progress mt-2"><div id="progress-bar" class="progress-bar" style="width:10%"></div></div>
+        </div>
+
+        <h5 id="question"></h5>
+        <div id="options" class="my-4"></div>
+        <div id="feedback" class="alert d-none"></div>
+
+        <div class="text-center">
+          <button id="next-btn" class="btn btn-primary" disabled>Next Question</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="result" class="text-center mt-5 d-none">
+      <h2>Quiz Complete!</h2>
+      <h3>You scored <span id="score">0</span> out of <span id="total-q">10</span></h3>
+      <button class="btn btn-success btn-lg" onclick="location.reload()">Retake Quiz</button>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Made with ❤️ for the GitHub Actions certification community | 100% free & open source
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// === QUESTIONS ===
+const questions = [
+  {q:"How are action inputs exposed as environment variables?",o:["INPUT_{NAME} in uppercase","input-name","GITHUB_INPUT_{NAME}","As written"],c:0,e:"GitHub creates <code>INPUT_BUILD_TARGET</code> (uppercase + underscore) from input <code>build target</code>."},
+  {q:"Maximum jobs a matrix can create in one run?",o:["512","256","1024","No limit"],c:1,e:"Hard limit is <strong>256 jobs</strong> per workflow run."},
+  {q:"Best way to enforce secure pipelines across many repos?",o:["CODEOWNERS reviews","Reusable workflows & starter templates","Move to another CI","Env variables only"],c:1,e:"Organization-level reusable workflows are the most scalable and enforceable."},
+  {q:"When are service containers (postgres, redis) created/destroyed?",o:["Per workflow","Per runner","Per job","Only when referenced"],c:2,e:"Created at job start → destroyed at job end."},
+  {q:"Where do you see logs from a container action?",o:["GitHub Actions UI → expand step","docker logs on runner","Cloud Build","GitHub CLI only"],c:0,e:"All logs appear directly in the step in the Actions tab."},
+  {q:"Event for manual trigger from UI?",o:["push","pull_request","issues","workflow_dispatch"],c:3,e:"<code>workflow_dispatch</code> enables the “Run workflow” button."},
+  {q:"Default GITHUB_TOKEN permissions (2024+)?",o:["Read-only contents","Full repo access","Depends on event","No access"],c:0,e:"New repos default to read-only contents & packages."},
+  {q:"How to cache dependencies across runs?",o:["actions/cache + hashFiles()","Artifacts","Automatic","Self-hosted only"],c:0,e:"<code>actions/cache</code> is the official & recommended way."},
+  {q:"Where can secrets be defined?",o:["Repo only","Environment only","Org only","All of the above"],c:3,e:"Secrets exist at repository, environment, and organization level."},
+  {q:"Effect of continue-on-error: true?",o:["Job fails","Job continues","Step skipped","Workflow cancelled"],c:1,e:"The job keeps running even if that step fails."}
+];
+
+// === QUIZ LOGIC ===
+let cur = 0, score = 0;
+const qEl = document.getElementById('question');
+const optsEl = document.getElementById('options');
+const fbEl = document.getElementById('feedback');
+const nextBtn = document.getElementById('next-btn');
+
+document.getElementById('total').textContent = questions.length;
+document.getElementById('total-q').textContent = questions.length;
+
+function showSection(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.add('d-none'));
+  document.getElementById(id).classList.remove('d-none');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelector(`a[href="#${id}"]`).classList.add('active');
+}
+
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(link.getAttribute('href').substring(1));
+  });
+});
+
+function loadQuestion() {
+  const ques = questions[cur];
+  qEl.innerHTML = `<strong>Q${cur+1}:</strong> ${ques.q}`;
+  optsEl.innerHTML = '';
+  fbEl.classList.add('d-none');
+  nextBtn.disabled = true;
+
+  ques.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline-primary option-btn w-100';
+    btn.innerHTML = opt;
+    btn.onclick = () => select(i, btn);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('current').textContent = cur+1;
+  document.getElementById('progress-bar').style.width = `${((cur+1)/questions.length)*100}%`;
+}
+
+function select(idx, btn) {
+  const ques = questions[cur];
+  const all = optsEl.querySelectorAll('button');
+  all.forEach(b => b.disabled = true);
+
+  if (idx === ques.c) {
+    score++;
+    btn.classList.replace('btn-outline-primary','btn-success');
+    fbEl.innerHTML = `<strong>Correct!</strong> ${ques.e}`;
+    fbEl.className = 'alert alert-success';
+  } else {
+    btn.classList.replace('btn-outline-primary','btn-danger');
+    fbEl.innerHTML = `<strong>Wrong.</strong> ${ques.e}<br>Correct: <strong>${ques.o[ques.c]}</strong>`;
+    fbEl.className = 'alert alert-danger';
+    all[ques.c].classList.replace('btn-outline-primary','btn-success');
+  }
+  fbEl.classList.remove('d-none');
+  nextBtn.disabled = false;
+}
+
+nextBtn.onclick = () => {
+  cur++;
+  if (cur < questions.length) loadQuestion();
+  else {
+    document.getElementById('quiz-container').classList.add('d-none');
+    document.getElementById('result').classList.remove('d-none');
+    document.getElementById('score').textContent = score;
+  }
+};
+
+// Start
+showSection('home');
+loadQuestion();
+</script>
+</body>
+</html>
