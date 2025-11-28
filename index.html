@@ -8,20 +8,21 @@
   <style>
     body { background:#f8f9fa; padding-top: 80px; font-family: system-ui, sans-serif; }
     .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .option-btn { margin: 10px 0; text-align: left; padding: 15px; font-size: 1.1rem; }
+    .option-btn { margin: 10px 0; text-align: left; padding: 15px; font-size: 1.1rem; border-radius: 8px; }
     .alert code { background: #e9ecef; padding: 2px 6px; border-radius: 4px; }
     footer { margin-top: 120px; padding: 30px; background: #212529; color: white; text-align:center; }
+    .nav-link { cursor: pointer; }
   </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">GH-200 Prep</a>
+    <a class="navbar-brand fw-bold">GH-200 Prep</a>
     <div class="navbar-nav ms-auto">
-      <a class="nav-link active" href="#home">Home</a>
-      <a class="nav-link" href="#guide">Study Guide</a>
-      <a class="nav-link" href="#quiz">Quiz (20 Qs)</a>
+      <span class="nav-link active" data-section="home">Home</span>
+      <span class="nav-link" data-section="guide">Study Guide</span>
+      <span class="nav-link" data-section="quiz">Quiz (25 Qs)</span>
     </div>
   </div>
 </nav>
@@ -32,8 +33,8 @@
   <section id="home" class="text-center py-5">
     <h1 class="display-4">GitHub Actions Certification Prep</h1>
     <p class="lead mb-4">Free practice for the official <strong>GitHub Actions (GH-200)</strong> exam</p>
-    <a href="#quiz" class="btn btn-success btn-lg mx-2">Start 20-Question Quiz</a>
-    <a href="#guide" class="btn btn-primary btn-lg mx-2">Study Guide</a>
+    <button class="btn btn-success btn-lg mx-2" onclick="showSection('quiz')">Start 25-Question Quiz</button>
+    <button class="btn btn-primary btn-lg mx-2" onclick="showSection('guide')">Study Guide</button>
   </section>
 
   <!-- STUDY GUIDE -->
@@ -43,30 +44,37 @@
       <div class="col-md-6">
         <div class="card h-100"><div class="card-body">
           <h5>1. Author & Maintain Workflows (40%)</h5><ul>
-            <li>Triggers, matrix, needs, if, secrets, GITHUB_TOKEN permissions</li>
-            <li>Reusable workflows, service containers, caching, artifacts</li>
+            <li>Triggers: push, pull_request, schedule, workflow_dispatch</li>
+            <li>YAML: jobs, steps, matrix, needs, if conditionals</li>
+            <li>Secrets, GITHUB_TOKEN, env vars, caching, artifacts</li>
+            <li>Service containers, CodeQL, releases, deployments</li>
           </ul>
         </div></div>
       </div>
       <div class="col-md-6">
         <div class="card h-100"><div class="card-body">
           <h5>2. Consume Workflows (20%)</h5><ul>
-            <li>Logs, debug logging, badges, environments, approvals</li>
+            <li>Logs, debug mode, status badges, dependency graphs</li>
+            <li>Environments, approvals, branch protections</li>
+            <li>Download/upload artifacts, pass data between jobs</li>
           </ul>
         </div></div>
       </div>
       <div class="col-md-6">
         <div class="card h-100"><div class="card-body">
           <h5>3. Author & Maintain Actions (25%)</h5><ul>
-            <li>JavaScript / Docker / Composite actions</li>
-            <li>action.yml, inputs/outputs, workflow commands</li>
+            <li>Types: JS, Docker, Composite</li>
+            <li>action.yml: inputs, outputs, runs</li>
+            <li>Workflow commands: ::set-output, ::add-mask</li>
           </ul>
         </div></div>
       </div>
       <div class="col-md-6">
         <div class="card h-100"><div class="card-body">
           <h5>4. Enterprise Management (15%)</h5><ul>
-            <li>Self-hosted runners, org secrets, policies, starter workflows</li>
+            <li>Self-hosted runners, groups, policies</li>
+            <li>Org secrets, reusable workflows, starter workflows</li>
+            <li>Monitoring, troubleshooting runners</li>
           </ul>
         </div></div>
       </div>
@@ -75,12 +83,12 @@
 
   <!-- QUIZ -->
   <section id="quiz" class="d-none">
-    <h2 class="text-center mb-4">Practice Quiz – 20 Questions</h2>
+    <h2 class="text-center mb-4">Practice Quiz – 25 Questions</h2>
     <div id="quiz-box" class="card shadow mx-auto" style="max-width:900px;">
       <div class="card-body">
         <div class="mb-4">
-          Question <span id="curr">1</span> / <span id="tot">20</span>
-          <div class="progress mt-2"><div id="bar" class="progress-bar bg-success" style="width:5%"></div></div>
+          Question <span id="curr">1</span> / <span id="tot">25</span>
+          <div class="progress mt-2"><div id="bar" class="progress-bar bg-success" style="width:4%"></div></div>
         </div>
         <h5 id="qtext" class="mb-4"></h5>
         <div id="opts"></div>
@@ -93,41 +101,48 @@
 
     <div id="end" class="text-center mt-5 d-none">
       <h2>Quiz Finished!</h2>
-      <h3>You scored <span id="sc">0</span> out of 20</h3>
+      <h3>You scored <span id="sc">0</span> out of 25 (<span id="perc">0</span>%)</h3>
+      <p class="lead">Keep practicing for GH-200!</p>
       <button class="btn btn-success btn-lg" onclick="location.reload()">Retake Quiz</button>
     </div>
   </section>
 
 </div>
 
-<footer>Made for the GitHub Actions certification community – 100% free</footer>
+<footer>Made for the GitHub Actions certification community – 100% free & tested</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// 20 Real Exam-Style Questions
+// 25 Real Exam-Style Questions (expanded for better prep)
 const questions = [
-  {q:"How are action inputs exposed to JavaScript actions?",o:["INPUT_ + uppercase name","input-name","GITHUB_INPUT_","As-is"],c:0,e:"GitHub creates <code>INPUT_MY_INPUT</code> automatically (uppercase + underscore)."},
-  {q:"Maximum number of jobs a matrix can generate?",o:["128","256","512","No limit"],c:1,e:"Hard limit is 256 jobs per workflow run."},
-  {q:"Best way to enforce the same secure workflow across 100 repos?",o:["CODEOWNERS","Reusable workflows + starter workflows","Manual reviews","Env variables"],c:1,e:"Reusable + starter workflows are the official recommended pattern."},
-  {q:"When are service containers created and destroyed?",o:["Per workflow","Per runner","Per job","Only when used"],c:2,e:"Created when the job starts, destroyed when the job ends."},
-  {q:"Where do container action logs appear?",o:["Actions UI → expand the step","docker logs on runner","Cloud Build","GitHub CLI"],c:0,e:"All logs are shown directly in the GitHub Actions UI."},
-  {q:"Which event enables the 'Run workflow' button?",o:["push","pull_request","issues","workflow_dispatch"],c:3,e:"<code>on: workflow_dispatch</code> adds the manual trigger button."},
-  {q:"Default GITHUB_TOKEN permission in new repos (2024+)?",o:["read:all","contents: read","Full repo","None"],c:1,e:"New repositories default to read-only for contents and packages."},
-  {q:"How to cache node_modules across runs?",o:["actions/cache","upload-artifact","GitHub auto","Self-hosted only"],c:0,e:"<code>actions/cache@v4</code> with a key based on hashFiles()."},
-  {q:"continue-on-error: true does what?",o:["Fails job","Continues job","Skips step","Cancels workflow"],c:1,e:"Job continues even if that step fails."},
-  {q:"Where can secrets exist?",o:["Repo only","Environment only","Org only","All levels"],c:3,e:"Repository, Environment, and Organization secrets."},
-  {q:"What does <code>needs</code> do?",o:["Runs jobs in parallel","Runs jobs sequentially","Skips jobs","Shares data"],c:1,e:"<code>job2.needs: job1</code> = job2 waits for job1."},
-  {q:"How to pass data from one job to another?",o:["env","artifacts","outputs + needs","secrets"],c:2,e:"Set outputs in first job → reference via <code>needs.job1.outputs.xxx</code>."},
-  {q:"What is the name of the official caching action?",o:["actions/cache","actions/upload-artifact","actions/setup-node","cache/action"],c:0,e:"<code>actions/cache@v4</code> is the correct one."},
-  {q:"Which runner runs <code>actions/checkout@v4</code> by default?",o:["ubuntu-latest","windows-latest","macos-latest","All of them"],c:0,e:"<code>ubuntu-latest</code> is default unless specified."},
-  {q:"How to require approval before deployment?",o:["branches","environments","required reviewers","permissions"],c:1,e:"Use <code>environment:</code> with required reviewers."},
-  {q:"What does <code>::add-mask</code> do?",o:["Hides value in logs","Sets output","Adds path","Masks secrets"],c:0,e:"Workflow command to mask secrets in logs."},
-  {q:"Maximum concurrent jobs on free GitHub-hosted runners (public repo)?",o:["10","20","40","Unlimited"],c:1,e:"20 concurrent jobs on public repos."},
-  {q:"What is a composite action?",o:["JS action","Docker action","Multiple run: steps","Reusable workflow"],c:2,e:"Multiple <code>run:</code> steps packaged as an action."},
-  {q:"How to run a workflow on a schedule?",o:["cron","schedule","workflow_dispatch","push"],c:1,e:"<code>on: schedule: - cron: '0 * * * *'</code>"},
-  {q:"What does <code>permissions: { contents: write }</code> do?",o:["Grants write access to GITHUB_TOKEN","Default","Error","Read only"],c:0,e:"Explicitly grants write permission (least-privilege principle)."}
+  {q:"How are action inputs exposed to JavaScript actions as env vars?",o:["INPUT_ + uppercase (e.g., INPUT_BUILD_TARGET)","input-name with hyphens","GITHUB_INPUT_ prefix","As-is with spaces"],c:0,e:"GitHub auto-converts: prefix <code>INPUT_</code>, uppercase, underscores for spaces."},
+  {q:"Max jobs a matrix strategy can generate in one workflow run?",o:["128","256","512","No limit"],c:1,e:"Hard limit: <strong>256 jobs</strong> per run to prevent abuse."},
+  {q:"Best way to standardize secure workflows across 100+ repos?",o:["CODEOWNERS for reviews","Reusable workflows + starter workflows","Manual audits","Env vars only"],c:1,e:"Org-level reusable/starter workflows enforce consistency and security (e.g., CodeQL baked in)."},
+  {q:"When are service containers (e.g., postgres) created/destroyed?",o:["Per workflow run","Per runner session","Per job","Only when a step references them"],c:2,e:"Created at job start, destroyed at job end—available to all steps in the job."},
+  {q:"Where to view detailed logs from a Docker container action?",o:["Actions UI: expand the step","docker logs on the runner VM","Cloud Build console","GitHub CLI: gh run view"],c:0,e:"Logs stream directly to the GitHub Actions UI under the step— no external tools needed."},
+  {q:"Which event adds a 'Run workflow' button in the UI?",o:["push","pull_request","issues","workflow_dispatch"],c:3,e:"<code>on: workflow_dispatch</code> enables manual/API triggers with optional inputs."},
+  {q:"Default GITHUB_TOKEN permissions in new repos (2024+)?",o:["contents: write","contents: read","Full repo access","No permissions"],c:1,e:"Least-privilege default: read for contents/packages; explicit <code>permissions:</code> needed for more."},
+  {q:"Standard way to cache dependencies (e.g., node_modules)?",o:["actions/cache@v4 + hashFiles()","upload-artifact","GitHub auto-caches","Self-hosted runners only"],c:0,e:"Use <code>actions/cache</code> with a key like <code>hashFiles('**/package-lock.json')</code>."},
+  {q:"What does <code>continue-on-error: true</code> on a step do?",o:["Skips the step entirely","Fails the job immediately","Allows job to continue despite step failure","Cancels the workflow"],c:2,e:"Step marks as failed, but job/workflow proceeds—useful for non-critical steps."},
+  {q:"Levels where secrets can be stored?",o:["Repo only","Environment only","Org only","All three"],c:3,e:"Repository, Environment, and Organization secrets; org ones can be repo-specific."},
+  {q:"Purpose of <code>needs:</code> in job config?",o:["Parallel execution","Sequential dependency (wait for prior job)","Data sharing only","Conditional skipping"],c:1,e:"<code>job2: needs: job1</code> ensures job2 runs after job1 succeeds."},
+  {q:"How to pass outputs from one job to another?",o:["env vars","artifacts","needs.job1.outputs.var","secrets"],c:2,e:"Set <code>outputs:</code> in job1, reference via <code>needs.job1.outputs.myvar</code> in job2."},
+  {q:"Official action for caching?",o:["actions/cache","actions/upload-artifact","actions/setup-node (built-in)","cache/action"],c:0,e:"<code>actions/cache@v4</code>—supports paths and custom keys."},
+  {q:"Default runner for <code>actions/checkout@v4</code> if unspecified?",o:["windows-latest","ubuntu-latest","macos-latest","self-hosted"],c:1,e:"<code>ubuntu-latest</code> is the default for most actions/workflows."},
+  {q:"How to require human approval before a job runs?",o:["branch protections","environments with reviewers","required reviewers in YAML","permissions block"],c:1,e:"<code>environment: production</code> + required reviewers in repo settings."},
+  {q:"Workflow command to mask a secret in logs?",o:["::set-output::","::add-mask::value","::debug::","::error::"],c:1,e:"<code>echo '::add-mask::${{ secrets.MY_SECRET }}'</code> hides it from logs."},
+  {q:"Max concurrent jobs on free GitHub-hosted runners (public repo)?",o:["10","20","50","Unlimited"],c:1,e:"20 concurrent jobs; private repos limited to 5/minute."},
+  {q:"What defines a composite action?",o:["Single JS file","Docker container","Multiple run: steps in action.yml","Reusable workflow"],c:2,e:"Packages several <code>run:</code> or <code>uses:</code> steps into one action."},
+  {q:"Syntax for scheduling a workflow (e.g., hourly)?",o:["on: cron: '0 * * * *'","on: schedule: hourly","on: timer: 3600","on: push: schedule"],c:0,e:"<code>on: schedule: - cron: '0 * * * *'</code> for top-of-hour runs."},
+  {q:"Role of <code>permissions: { contents: write }</code>?",o:["Default read access","Grants write to GITHUB_TOKEN","Blocks all access","Enforces approvals"],c:1,e:"Explicitly sets token scopes—follows least-privilege security."},
+  {q:"How to trigger on a specific branch?",o:["branches: [main]","paths: ['src/**']","types: [opened]","tags: v*"],c:0,e:"<code>on: push: branches: [main]</code> limits to that branch."},
+  {q:"What enables step debug logging?",o:["secrets.GITHUB_TOKEN","run: | echo '::debug::'","env: ACTIONS_STEP_DEBUG=true","workflow_dispatch"],c:2,e:"Set <code>ACTIONS_STEP_DEBUG: true</code> in repo secrets or env."},
+  {q:"Max retention for artifacts (free tier)?",o:["7 days","30 days","90 days","Unlimited"],c:1,e:"Default 90 days, but free: 7 days; configurable up to 90."},
+  {q:"Difference between reusable workflow vs. action?",o:["Workflow calls other workflows; action is a step","Action is YAML-only","No difference","Workflow can't have inputs"],c:0,e:"Reusable workflows: <code>uses: ./.github/workflows/other.yml</code>; actions are steps."},
+  {q:"How to route jobs to specific runners?",o:["runs-on: self-hosted","labels: [gpu]","Both A and B","env: RUNNER_LABEL"],c:2,e:"<code>runs-on: [self-hosted, gpu]</code> uses labels/groups for targeting."}
 ];
 
-let current = 0, correct = 0;
+let current = 0, score = 0;
 
 const qtext = document.getElementById('qtext');
 const opts = document.getElementById('opts');
@@ -136,63 +151,60 @@ const next = document.getElementById('next');
 const bar = document.getElementById('bar');
 const currSpan = document.getElementById('curr');
 const totSpan = document.getElementById('tot');
-tot').textContent = questions.length;
+const scSpan = document.getElementById('sc');
+const percSpan = document.getElementById('perc');
+totSpan.textContent = questions.length;
 
-function show(id) {
+function showSection(id) {
+  // Hide all sections
   document.querySelectorAll('section').forEach(s => s.classList.add('d-none'));
+  // Show target
   document.getElementById(id).classList.remove('d-none');
+  // Update nav active
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.querySelector(`a[href="#${id}"]`).classList.add('active');
-  if (id === 'quiz') startQuiz();
+  document.querySelector(`[data-section="${id}"]`).classList.add('active');
+  // Reset quiz if entering
+  if (id === 'quiz') {
+    current = 0;
+    score = 0;
+    loadQuestion();
+  }
 }
 
-document.querySelectorAll('.nav-link, a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    show(a.getAttribute('href').substring(1));
-  });
-});
-
-function startQuiz() {
-  current = 0;
-  correct = 0;
-  loadQ();
-}
-
-function loadQ() {
+function loadQuestion() {
   const q = questions[current];
-  qtext.innerHTML = `<strong>Q${current+1}:</strong> ${q.q}`;
+  qtext.innerHTML = `<strong>Q${current + 1}:</strong> ${q.q}`;
   opts.innerHTML = '';
   fb.classList.add('d-none');
   next.disabled = true;
 
   q.o.forEach((opt, i) => {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline-primary option-btn w-100';
+    btn.className = 'btn btn-outline-primary option-btn w-100 mb-2';
     btn.innerHTML = opt;
-    btn.onclick = () => choose(i, btn);
+    btn.onclick = () => selectAnswer(i, btn);
     opts.appendChild(btn);
   });
 
-  currSpan.textContent = current+1;
-  bar.style.width = `${((current+1)/questions.length)*100}%`;
+  currSpan.textContent = current + 1;
+  bar.style.width = `${((current + 1) / questions.length) * 100}%`;
 }
 
-function choose(idx, btn) {
+function selectAnswer(idx, btn) {
   const q = questions[current];
-  const all = opts.querySelectorAll('button');
-  all.forEach(b => b.disabled = true);
+  const allBtns = opts.querySelectorAll('button');
+  allBtns.forEach(b => b.disabled = true);
 
   if (idx === q.c) {
-    correct++;
-    btn.classList.replace('btn-outline-primary','btn-success');
+    score++;
+    btn.classList.replace('btn-outline-primary', 'btn-success');
     fb.innerHTML = `<strong>Correct!</strong> ${q.e}`;
     fb.className = 'alert alert-success';
   } else {
-    btn.classList.replace('btn-outline-primary','btn-danger');
-    fb.innerHTML = `<strong>Wrong.</strong> ${q.e}<br><small>Correct → <strong>${q.o[q.c]}</strong></small>`;
+    btn.classList.replace('btn-outline-primary', 'btn-danger');
+    fb.innerHTML = `<strong>Incorrect.</strong> ${q.e}<br><small>Correct answer: <strong>${q.o[q.c]}</strong></small>`;
     fb.className = 'alert alert-danger';
-    all[q.c].classList.replace('btn-outline-primary','btn-success');
+    allBtns[q.c].classList.replace('btn-outline-primary', 'btn-success');
   }
   fb.classList.remove('d-none');
   next.disabled = false;
@@ -200,15 +212,34 @@ function choose(idx, btn) {
 
 next.onclick = () => {
   current++;
-  if (current < questions.length) loadQ();
-  else {
+  if (current < questions.length) {
+    loadQuestion();
+  } else {
+    // Show results
     document.getElementById('quiz-box').classList.add('d-none');
     document.getElementById('end').classList.remove('d-none');
-    document.getElementById('sc').textContent = correct;
+    scSpan.textContent = score;
+    percSpan.textContent = Math.round((score / questions.length) * 100);
   }
 };
 
-show('home');
+// Event listeners (vanilla JS, no jQuery/Bootstrap dependency)
+document.addEventListener('DOMContentLoaded', () => {
+  // Nav clicks
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const section = link.getAttribute('data-section');
+      showSection(section);
+    });
+  });
+  // Home buttons (already have onclick, but ensure)
+  document.querySelectorAll('button[onclick]').forEach(btn => {
+    // Already handled inline
+  });
+});
+
+// Init
+showSection('home');
 </script>
 </body>
 </html>
