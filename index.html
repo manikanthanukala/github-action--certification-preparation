@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -48,11 +48,6 @@
             text-align: left;
         }
 
-        .exam-details h2 {
-            color: #24292e;
-            margin-bottom: 15px;
-        }
-
         .start-btn {
             background: #2ea44f;
             color: white;
@@ -68,7 +63,6 @@
         .start-btn:hover {
             background: #2c974b;
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(46, 164, 79, 0.3);
         }
 
         .quiz-container {
@@ -108,7 +102,7 @@
             background: white;
         }
 
-        .option:hover {
+        .option:hover:not(.selected) {
             border-color: #0969da;
             background: #f8f9fa;
         }
@@ -140,7 +134,7 @@
         .explanation {
             margin-top: 15px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 6px;
             border-left: 4px solid #2ea44f;
         }
@@ -162,7 +156,7 @@
             font-weight: 500;
         }
 
-        .nav-btn:hover {
+        .nav-btn:hover:not(:disabled) {
             background: #f6f8fa;
         }
 
@@ -200,148 +194,12 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
+        .summary p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Exam Information Screen -->
-        <div class="exam-info" id="examInfo">
-            <h1>GitHub Actions Certification Practice Test</h1>
-            <div class="exam-details">
-                <h2>Exam Details</h2>
-                <p><strong>Exam Code:</strong> GITHUB-ACTIONS-2022</p>
-                <p><strong>Number of Questions:</strong> 60</p>
-                <p><strong>Duration:</strong> 180 minutes</p>
-                <p><strong>Passing Score:</strong> 70%</p>
-                <p><strong>Exam Format:</strong> Multiple Choice, Multiple Response</p>
-                <p><strong>Key Topics Covered:</strong></p>
-                <ul style="text-align: left; display: inline-block; margin: 10px 0;">
-                    <li>Workflow syntax, structure, and behavior</li>
-                    <li>GitHub Actions architecture and event model</li>
-                    <li>Managing and troubleshooting workflows</li>
-                    <li>Security controls and settings</li>
-                    <li>Custom actions and composite actions</li>
-                    <li>Reusable workflows and workflow calls</li>
-                </ul>
-            </div>
-            <button class="start-btn" onclick="startExam()">Start Practice Test</button>
-        </div>
-
-        <!-- Quiz Container -->
-        <div class="quiz-container" id="quizContainer">
-            <div class="progress" id="progress"></div>
-            <div class="question-container" id="questionContainer"></div>
-            <div class="navigation" id="navigation"></div>
-        </div>
-
-        <!-- Summary Screen -->
-        <div class="summary" id="summary">
-            <h1>Test Complete</h1>
-            <div class="score" id="finalScore"></div>
-            <p id="scoreMessage"></p>
-            <button class="restart-btn" onclick="restartExam()">Take Another Practice Test</button>
-        </div>
-    </div>
-
-    <script>
-        const questions = [
-            {
-                question: "What is the default interval at which GitHub Actions polls repository branches for changes?",
-                options: ["Every 1 minute", "Every 5 minutes", "Every 10 minutes", "Every 15 minutes"],
-                correct: 1,
-                explanation: "GitHub Actions polls repository branches for changes every 5 minutes. This is the default polling interval for triggering workflows on push events."
-            },
-            {
-                question: "Which file must be present in a repository to define GitHub Actions workflows?",
-                options: [".github/workflows/*.yml", ".github/actions/*.yml", "actions.yml", "workflow.yml"],
-                correct: 0,
-                explanation: "Workflow files must be located in the .github/workflows directory and must have a .yml or .yaml file extension."
-            },
-            {
-                question: "What happens when a job fails in a GitHub Actions workflow?",
-                options: ["The entire workflow fails immediately", "Subsequent jobs continue to run", "Only subsequent steps in the same job are skipped", "The workflow continues until all jobs complete"],
-                correct: 2,
-                explanation: "When a step fails within a job, all subsequent steps in that job are skipped. However, other jobs in the workflow can continue running unless explicitly configured otherwise."
-            },
-            {
-                question: "Which environment variable is automatically available in all GitHub Actions jobs and contains the unique identifier of the job?",
-                options: ["GITHUB_JOB", "GITHUB_RUN_ID", "GITHUB_SHA", "GITHUB_REF"],
-                correct: 0,
-                explanation: "The GITHUB_JOB environment variable contains the job identifier and is automatically available in all steps of that job."
-            },
-            {
-                question: "What is the maximum number of jobs that can run concurrently across all repositories owned by a user, organization, or enterprise?",
-                options: ["20", "40", "60", "100"],
-                correct: 0,
-                explanation: "The default limit for concurrent jobs across all repositories owned by a user, organization, or enterprise is 20 jobs."
-            },
-            {
-                question: "Which of the following is required to create a reusable workflow?",
-                options: ["workflow_call event trigger", "composite action definition", "self-hosted runner", "workflow_dispatch event"],
-                correct: 0,
-                explanation: "Reusable workflows must include the workflow_call event trigger in the on section of the workflow file to be callable from other workflows."
-            },
-            {
-                question: "What is the purpose of the 'permissions' key at the job level in a workflow?",
-                options: ["Define which steps can run", "Specify permissions granted to the GITHUB_TOKEN", "Control which runners can execute the job", "Set environment protection rules"],
-                correct: 1,
-                explanation: "The permissions key at the job level explicitly defines which permissions are granted to the GITHUB_TOKEN for that job, providing better security control."
-            },
-            {
-                question: "Which file format is used to define a composite action?",
-                options: ["action.yml", "workflow.yml", "composite.yml", "action.json"],
-                correct: 0,
-                explanation: "Composite actions are defined using an action.yml file that specifies runs: using: composite and contains a series of steps to execute."
-            },
-            {
-                question: "What is the default behavior when a step fails in a GitHub Actions workflow?",
-                options: ["The workflow continues running all subsequent steps", "The job continues but subsequent steps are skipped", "The entire workflow is immediately cancelled", "The workflow fails but continues until all jobs complete"],
-                correct: 1,
-                explanation: "By default, when a step fails, all subsequent steps in the same job are skipped, and the job fails. Other jobs in the workflow can continue unless configured otherwise."
-            },
-            {
-                question: "Which event trigger allows manual triggering of a workflow?",
-                options: ["workflow_dispatch", "workflow_run", "push", "pull_request"],
-                correct: 0,
-                explanation: "The workflow_dispatch event enables manual triggering of a workflow through the GitHub UI, GitHub CLI, or GitHub API."
-            }
-        ];
-
-        let currentQuestion = 0;
-        let answers = [];
-        let score = 0;
-
-        function startExam() {
-            document.getElementById('examInfo').style.display = 'none';
-            document.getElementById('quizContainer').style.display = 'block';
-            currentQuestion = 0;
-            answers = new Array(questions.length).fill(null);
-            score = 0;
-            showQuestion();
-        }
-
-        function showQuestion() {
-            if (currentQuestion >= questions.length) {
-                showSummary();
-                return;
-            }
-
-            const question = questions[currentQuestion];
-            const questionContainer = document.getElementById('questionContainer');
-            const progress = document.getElementById('progress');
-
-            progress.innerHTML = `Question ${currentQuestion + 1} of ${questions.length}`;
-            
-            questionContainer.innerHTML = `
-                <div class="question-number">Question ${currentQuestion + 1}</div>
-                <div class="question-text">${question.question}</div>
-                <div class="options"></div>
-                <div class="feedback" id="feedback"></div>
-            `;
-
-            const optionsContainer = questionContainer.querySelector('.options');
-            question.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option';
-                optionElement.innerHTML = `<span>A</span><span>B</span><span>C</span><span>D</span>[${index + 1}] ${option}`;
-                optionElement.addEventListener
+    <div class="container
