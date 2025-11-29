@@ -1,270 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GH-200 GitHub Actions Certification Prep</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <style>
-    body { background:#f8f9fa; padding-top: 80px; font-family: system-ui, sans-serif; }
-    .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .option-btn { margin: 10px 0; text-align: left; padding: 15px; font-size: 1.1rem; border-radius: 8px; }
-    .alert code { background: #e9ecef; padding: 2px 6px; border-radius: 4px; }
-    footer { margin-top: 120px; padding: 30px; background: #212529; color: white; text-align:center; }
-    .nav-link { cursor: pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Actions Certification Practice Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .exam-info {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .exam-info h1 {
+            color: #24292e;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .exam-details {
+            background: #f6f8fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .exam-details h2 {
+            color: #24292e;
+            margin-bottom: 15px;
+        }
+
+        .start-btn {
+            background: #2ea44f;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: #2c974b;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(46, 164, 79, 0.3);
+        }
+
+        .quiz-container {
+            display: none;
+            padding: 40px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            font-size: 0.9em;
+            color: #586069;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #24292e;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #0969da;
+            background: #f8f9fa;
+        }
+
+        .option.selected {
+            border-color: #2ea44f;
+            background: #d4edda;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            border-left: 4px solid #2ea44f;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: 1px solid #d0d7de;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #f6f8fa;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #586069;
+        }
+
+        .summary {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 4em;
+            color: #2ea44f;
+            margin-bottom: 20px;
+        }
+
+        .restart-btn {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold">GH-200 Prep</a>
-    <div class="navbar-nav ms-auto">
-      <span class="nav-link active" data-section="home">Home</span>
-      <span class="nav-link" data-section="guide">Study Guide</span>
-      <span class="nav-link" data-section="quiz">Quiz (25 Qs)</span>
-    </div>
-  </div>
-</nav>
-
-<div class="container mt-4">
-
-  <!-- HOME -->
-  <section id="home" class="text-center py-5">
-    <h1 class="display-4">GitHub Actions Certification Prep</h1>
-    <p class="lead mb-4">Free practice for the official <strong>GitHub Actions (GH-200)</strong> exam</p>
-    <button class="btn btn-success btn-lg mx-2" onclick="showSection('quiz')">Start 25-Question Quiz</button>
-    <button class="btn btn-primary btn-lg mx-2" onclick="showSection('guide')">Study Guide</button>
-  </section>
-
-  <!-- STUDY GUIDE -->
-  <section id="guide" class="d-none">
-    <h2>Exam Domains Quick Reference</h2>
-    <div class="row g-4">
-      <div class="col-md-6">
-        <div class="card h-100"><div class="card-body">
-          <h5>1. Author & Maintain Workflows (40%)</h5><ul>
-            <li>Triggers: push, pull_request, schedule, workflow_dispatch</li>
-            <li>YAML: jobs, steps, matrix, needs, if conditionals</li>
-            <li>Secrets, GITHUB_TOKEN, env vars, caching, artifacts</li>
-            <li>Service containers, CodeQL, releases, deployments</li>
-          </ul>
-        </div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100"><div class="card-body">
-          <h5>2. Consume Workflows (20%)</h5><ul>
-            <li>Logs, debug mode, status badges, dependency graphs</li>
-            <li>Environments, approvals, branch protections</li>
-            <li>Download/upload artifacts, pass data between jobs</li>
-          </ul>
-        </div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100"><div class="card-body">
-          <h5>3. Author & Maintain Actions (25%)</h5><ul>
-            <li>Types: JS, Docker, Composite</li>
-            <li>action.yml: inputs, outputs, runs</li>
-            <li>Workflow commands: ::set-output, ::add-mask</li>
-          </ul>
-        </div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100"><div class="card-body">
-          <h5>4. Enterprise Management (15%)</h5><ul>
-            <li>Self-hosted runners, groups, policies</li>
-            <li>Org secrets, reusable workflows, starter workflows</li>
-            <li>Monitoring, troubleshooting runners</li>
-          </ul>
-        </div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- QUIZ -->
-  <section id="quiz" class="d-none">
-    <h2 class="text-center mb-4">Practice Quiz – 25 Questions</h2>
-    <div id="quiz-box" class="card shadow mx-auto" style="max-width:900px;">
-      <div class="card-body">
-        <div class="mb-4">
-          Question <span id="curr">1</span> / <span id="tot">25</span>
-          <div class="progress mt-2"><div id="bar" class="progress-bar bg-success" style="width:4%"></div></div>
+    <div class="container">
+        <!-- Exam Information Screen -->
+        <div class="exam-info" id="examInfo">
+            <h1>GitHub Actions Certification Practice Test</h1>
+            <div class="exam-details">
+                <h2>Exam Details</h2>
+                <p><strong>Exam Code:</strong> GITHUB-ACTIONS-2022</p>
+                <p><strong>Number of Questions:</strong> 60</p>
+                <p><strong>Duration:</strong> 180 minutes</p>
+                <p><strong>Passing Score:</strong> 70%</p>
+                <p><strong>Exam Format:</strong> Multiple Choice, Multiple Response</p>
+                <p><strong>Key Topics Covered:</strong></p>
+                <ul style="text-align: left; display: inline-block; margin: 10px 0;">
+                    <li>Workflow syntax, structure, and behavior</li>
+                    <li>GitHub Actions architecture and event model</li>
+                    <li>Managing and troubleshooting workflows</li>
+                    <li>Security controls and settings</li>
+                    <li>Custom actions and composite actions</li>
+                    <li>Reusable workflows and workflow calls</li>
+                </ul>
+            </div>
+            <button class="start-btn" onclick="startExam()">Start Practice Test</button>
         </div>
-        <h5 id="qtext" class="mb-4"></h5>
-        <div id="opts"></div>
-        <div id="fb" class="alert mt-4 d-none"></div>
-        <div class="text-center mt-4">
-          <button id="next" class="btn btn-primary btn-lg" disabled>Next Question</button>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quizContainer">
+            <div class="progress" id="progress"></div>
+            <div class="question-container" id="questionContainer"></div>
+            <div class="navigation" id="navigation"></div>
         </div>
-      </div>
+
+        <!-- Summary Screen -->
+        <div class="summary" id="summary">
+            <h1>Test Complete</h1>
+            <div class="score" id="finalScore"></div>
+            <p id="scoreMessage"></p>
+            <button class="restart-btn" onclick="restartExam()">Take Another Practice Test</button>
+        </div>
     </div>
 
-    <div id="end" class="text-center mt-5 d-none">
-      <h2>Quiz Finished!</h2>
-      <h3>You scored <span id="sc">0</span> out of 25 (<span id="perc">0</span>%)</h3>
-      <p class="lead">Keep practicing for GH-200!</p>
-      <button class="btn btn-success btn-lg" onclick="location.reload()">Retake Quiz</button>
-    </div>
-  </section>
+    <script>
+        const questions = [
+            {
+                question: "What is the default interval at which GitHub Actions polls repository branches for changes?",
+                options: ["Every 1 minute", "Every 5 minutes", "Every 10 minutes", "Every 15 minutes"],
+                correct: 1,
+                explanation: "GitHub Actions polls repository branches for changes every 5 minutes. This is the default polling interval for triggering workflows on push events."
+            },
+            {
+                question: "Which file must be present in a repository to define GitHub Actions workflows?",
+                options: [".github/workflows/*.yml", ".github/actions/*.yml", "actions.yml", "workflow.yml"],
+                correct: 0,
+                explanation: "Workflow files must be located in the .github/workflows directory and must have a .yml or .yaml file extension."
+            },
+            {
+                question: "What happens when a job fails in a GitHub Actions workflow?",
+                options: ["The entire workflow fails immediately", "Subsequent jobs continue to run", "Only subsequent steps in the same job are skipped", "The workflow continues until all jobs complete"],
+                correct: 2,
+                explanation: "When a step fails within a job, all subsequent steps in that job are skipped. However, other jobs in the workflow can continue running unless explicitly configured otherwise."
+            },
+            {
+                question: "Which environment variable is automatically available in all GitHub Actions jobs and contains the unique identifier of the job?",
+                options: ["GITHUB_JOB", "GITHUB_RUN_ID", "GITHUB_SHA", "GITHUB_REF"],
+                correct: 0,
+                explanation: "The GITHUB_JOB environment variable contains the job identifier and is automatically available in all steps of that job."
+            },
+            {
+                question: "What is the maximum number of jobs that can run concurrently across all repositories owned by a user, organization, or enterprise?",
+                options: ["20", "40", "60", "100"],
+                correct: 0,
+                explanation: "The default limit for concurrent jobs across all repositories owned by a user, organization, or enterprise is 20 jobs."
+            },
+            {
+                question: "Which of the following is required to create a reusable workflow?",
+                options: ["workflow_call event trigger", "composite action definition", "self-hosted runner", "workflow_dispatch event"],
+                correct: 0,
+                explanation: "Reusable workflows must include the workflow_call event trigger in the on section of the workflow file to be callable from other workflows."
+            },
+            {
+                question: "What is the purpose of the 'permissions' key at the job level in a workflow?",
+                options: ["Define which steps can run", "Specify permissions granted to the GITHUB_TOKEN", "Control which runners can execute the job", "Set environment protection rules"],
+                correct: 1,
+                explanation: "The permissions key at the job level explicitly defines which permissions are granted to the GITHUB_TOKEN for that job, providing better security control."
+            },
+            {
+                question: "Which file format is used to define a composite action?",
+                options: ["action.yml", "workflow.yml", "composite.yml", "action.json"],
+                correct: 0,
+                explanation: "Composite actions are defined using an action.yml file that specifies runs: using: composite and contains a series of steps to execute."
+            },
+            {
+                question: "What is the default behavior when a step fails in a GitHub Actions workflow?",
+                options: ["The workflow continues running all subsequent steps", "The job continues but subsequent steps are skipped", "The entire workflow is immediately cancelled", "The workflow fails but continues until all jobs complete"],
+                correct: 1,
+                explanation: "By default, when a step fails, all subsequent steps in the same job are skipped, and the job fails. Other jobs in the workflow can continue unless configured otherwise."
+            },
+            {
+                question: "Which event trigger allows manual triggering of a workflow?",
+                options: ["workflow_dispatch", "workflow_run", "push", "pull_request"],
+                correct: 0,
+                explanation: "The workflow_dispatch event enables manual triggering of a workflow through the GitHub UI, GitHub CLI, or GitHub API."
+            }
+        ];
 
-</div>
+        let currentQuestion = 0;
+        let answers = [];
+        let score = 0;
 
-<footer>Made for the GitHub Actions certification community – 100% free & tested</footer>
+        function startExam() {
+            document.getElementById('examInfo').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(null);
+            score = 0;
+            showQuestion();
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// 25 Real Exam-Style Questions (expanded for better prep)
-const questions = [
-  {q:"How are action inputs exposed to JavaScript actions as env vars?",o:["INPUT_ + uppercase (e.g., INPUT_BUILD_TARGET)","input-name with hyphens","GITHUB_INPUT_ prefix","As-is with spaces"],c:0,e:"GitHub auto-converts: prefix <code>INPUT_</code>, uppercase, underscores for spaces."},
-  {q:"Max jobs a matrix strategy can generate in one workflow run?",o:["128","256","512","No limit"],c:1,e:"Hard limit: <strong>256 jobs</strong> per run to prevent abuse."},
-  {q:"Best way to standardize secure workflows across 100+ repos?",o:["CODEOWNERS for reviews","Reusable workflows + starter workflows","Manual audits","Env vars only"],c:1,e:"Org-level reusable/starter workflows enforce consistency and security (e.g., CodeQL baked in)."},
-  {q:"When are service containers (e.g., postgres) created/destroyed?",o:["Per workflow run","Per runner session","Per job","Only when a step references them"],c:2,e:"Created at job start, destroyed at job end—available to all steps in the job."},
-  {q:"Where to view detailed logs from a Docker container action?",o:["Actions UI: expand the step","docker logs on the runner VM","Cloud Build console","GitHub CLI: gh run view"],c:0,e:"Logs stream directly to the GitHub Actions UI under the step— no external tools needed."},
-  {q:"Which event adds a 'Run workflow' button in the UI?",o:["push","pull_request","issues","workflow_dispatch"],c:3,e:"<code>on: workflow_dispatch</code> enables manual/API triggers with optional inputs."},
-  {q:"Default GITHUB_TOKEN permissions in new repos (2024+)?",o:["contents: write","contents: read","Full repo access","No permissions"],c:1,e:"Least-privilege default: read for contents/packages; explicit <code>permissions:</code> needed for more."},
-  {q:"Standard way to cache dependencies (e.g., node_modules)?",o:["actions/cache@v4 + hashFiles()","upload-artifact","GitHub auto-caches","Self-hosted runners only"],c:0,e:"Use <code>actions/cache</code> with a key like <code>hashFiles('**/package-lock.json')</code>."},
-  {q:"What is the correct way to reference a reusable workflow from the same repo?",o:["uses: .github/workflows/build.yml","uses: ./build.yml","uses: org/repo/.github/workflows/build.yml@v1","call: build"],c:0,e:"Local path: <code>uses: .github/workflows/my-workflow.yml</code> (no tag needed if same repo/branch)."},
-  {q:"Which file defines a starter workflow?",o:[".github/workflows/",".github/ISSUE_TEMPLATE/",".github/starter-workflows/",".github/actions/"],c:2,e:"Starter workflows live in <code>.github/starter-workflows/</code> and appear when creating new repos."},
-  {q:"How do you limit a job to run only on pull requests from forks?",o:["if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true","if: github.event.fork == true","Only possible with self-hosted runners","Not possible"],c:0,e:"Use the condition to detect forked PRs and apply restrictions like read-only token."},
-  {q:"What happens if you use <code>actions/checkout@v4</code> without <code>with: fetch-depth: 0</code>?",o:["Shallow clone (1 commit)","Full clone","Error","Clone fails"],c:0,e:"Default is shallow clone — missing history can break things like release versioning or CodeQL."},
-  {q:"How to make a secret available to a forked PR workflow?",o:["It’s automatic","Never available for security","Manually approve workflow","Add secret to fork"],c:2,e:"Forked PRs get no secrets by default — must manually approve the workflow run in Actions tab."},
-  {q:"What does <code>jobs.<job_id>.outputs</code> require?",o:["The job must have <code>runs-on</code>","The job must have <code>outputs:</code> section","Nothing special","Only needed for matrix"],c:1,e:"You must explicitly define <code>outputs:</code> in the job to expose values to <code>needs</code>."},
-  {q:"Which action is used for dependency review (license/compliance scanning)?",o:["actions/dependency-review","codeql-action","actions/setup-node","advanced-security/dependency-review"],c:0,e:"<code>actions/dependency-review-action</code> blocks vulnerable/malicious dependencies."},
-  {q:"How to run a job only on tagged releases?",o:["on: push: tags: ['v*']","on: release","on: create","on: deployment"],c:0,e:"<code>on: push: tags: ['v*']</code> is the standard pattern."},
-  {q:"What is the max timeout for a single job on GitHub-hosted runners?",o:["6 hours","24 hours","72 hours","No limit"],c:0,e:"Maximum 6 hours per job (even with <code>timeout-minutes</code> higher, it’s capped)."},
-  {q:"How to skip a workflow run entirely?",o:["Add [skip ci] to commit message","Add [ci skip]","Both work","Only on self-hosted","Not possible"],c:0,e:"<code>[skip ci]</code> or <code>[ci skip]</code> in commit message skips Actions."},
-  {q:"What does <code>actions/upload-artifact@v4</code> do by default?",o:["Uploads all files in root","Requires <code>path:</code>","Uploads entire repo","Fails if no path"],c:1,e:"You must specify <code>path:</code> — it doesn’t upload everything by default."},
-  {q:"How to download an artifact in a later job?",o:["actions/download-artifact@v4","actions/artifact","fetch-artifact","automatic"],c:0,e:"Use <code>actions/download-artifact@v4</code> with <code>name:</code> or <code>path:</code>."},
-  {q:"Which label routes jobs to Windows runners?",o:["windows-latest","ubuntu-latest","macos-latest","self-hosted"],c:0,e:"<code>runs-on: windows-latest</code> uses Microsoft-hosted Windows runners."},
-  {q:"What is required to use OIDC with AWS/Azure/GCP?",o:["Set up trusted roles in cloud provider","Just add permissions","Install CLI","Nothing"],c:0,e:"You must configure trust relationship in AWS/Azure/GCP to allow GitHub OIDC token."},
-  {q:"How to debug a failed step with more detail?",o:["Enable 'Step debug logging' in repo settings","Add <code>debug: true</code>","Set <code>ACTIONS_STEP_DEBUG</code> secret","All of the above"],c:3,e:"All methods work — most common is the secret <code>ACTIONS_STEP_DEBUG=true</code>."},
-  {q:"What does <code>if: success()</code> mean?",o:["Run if previous step succeeded","Run if previous job succeeded","Run always","Run if failed"],c:0,e:"<code>success()</code>, <code>failure()</code>, <code>always()</code>, <code>cancelled()</code> are status checks."},
-  {q:"Can you use expressions in <code>runs-on</code>?",o:["Yes","No","Only labels","Only self-hosted"],c:0,e:"Yes — e.g. <code>runs-on: ${{ matrix.os }}</code> or conditional logic."},
-  {q:"What is the default branch for reusable workflows called from another repo?",o:["main","master","The latest tag","The default branch"],c:3,e:"Uses the default branch (usually <code>main</code>) unless you specify <code>@v1</code>, <code>@branch</code>."},
-  {q:"How to add a badge showing workflow status?",o:["https://github.com/user/repo/workflows/Name/badge.svg","https://github.com/user/repo/actions/badge.svg","Both work","No badge support"],c:0,e:"Use the workflow-specific badge URL from the Actions tab."},
-  {q:"Which of these is NOT a valid action type?",o:["JavaScript","Docker","Composite","Python"],c:3,e:"Only JavaScript, Docker, and Composite are supported action types."},
-  {q:"How to make a step run even if previous steps fail?",o:["continue-on-error: true","if: always()","Both","Neither"],c:2,e:"Both work! <code>continue-on-error</code> or <code>if: always()</code>."},
-  {q:"What does <code>github.ref_type == 'tag'</code> check?",o:["Is it a tag push","Is it a branch","Is it a PR","Is it a release"],c:0,e:"Useful to detect tag pushes vs branch pushes."},
-  {q:"Maximum number of environments per repo?",o:["64","100","256","No limit"],c:1,e:"Limit is 100 environments per repository."},
-  {q:"How to use a self-hosted runner with specific labels?",o:["runs-on: self-hosted","runs-on: [self-hosted, linux, gpu]","runs-on: my-label","All valid"],c:1,e:"You can combine <code>self-hosted</code> with custom labels."},
-  {q:"What is the recommended way to version a custom action?",o:["Use tags (v1, v2)","Use branches","Use commit SHA","Any works"],c:0,e:"Best practice: <code>uses: owner/action@v1.2.3</code> — pin to tag for stability."}
-  {q:"What does <code>continue-on-error: true</code> on a step do?",o:["Skips the step entirely","Fails the job immediately","Allows job to continue despite step failure","Cancels the workflow"],c:2,e:"Step marks as failed, but job/workflow proceeds—useful for non-critical steps."},
-  {q:"Levels where secrets can be stored?",o:["Repo only","Environment only","Org only","All three"],c:3,e:"Repository, Environment, and Organization secrets; org ones can be repo-specific."},
-  {q:"Purpose of <code>needs:</code> in job config?",o:["Parallel execution","Sequential dependency (wait for prior job)","Data sharing only","Conditional skipping"],c:1,e:"<code>job2: needs: job1</code> ensures job2 runs after job1 succeeds."},
-  {q:"How to pass outputs from one job to another?",o:["env vars","artifacts","needs.job1.outputs.var","secrets"],c:2,e:"Set <code>outputs:</code> in job1, reference via <code>needs.job1.outputs.myvar</code> in job2."},
-  {q:"Official action for caching?",o:["actions/cache","actions/upload-artifact","actions/setup-node (built-in)","cache/action"],c:0,e:"<code>actions/cache@v4</code>—supports paths and custom keys."},
-  {q:"Default runner for <code>actions/checkout@v4</code> if unspecified?",o:["windows-latest","ubuntu-latest","macos-latest","self-hosted"],c:1,e:"<code>ubuntu-latest</code> is the default for most actions/workflows."},
-  {q:"How to require human approval before a job runs?",o:["branch protections","environments with reviewers","required reviewers in YAML","permissions block"],c:1,e:"<code>environment: production</code> + required reviewers in repo settings."},
-  {q:"Workflow command to mask a secret in logs?",o:["::set-output::","::add-mask::value","::debug::","::error::"],c:1,e:"<code>echo '::add-mask::${{ secrets.MY_SECRET }}'</code> hides it from logs."},
-  {q:"Max concurrent jobs on free GitHub-hosted runners (public repo)?",o:["10","20","50","Unlimited"],c:1,e:"20 concurrent jobs; private repos limited to 5/minute."},
-  {q:"What defines a composite action?",o:["Single JS file","Docker container","Multiple run: steps in action.yml","Reusable workflow"],c:2,e:"Packages several <code>run:</code> or <code>uses:</code> steps into one action."},
-  {q:"Syntax for scheduling a workflow (e.g., hourly)?",o:["on: cron: '0 * * * *'","on: schedule: hourly","on: timer: 3600","on: push: schedule"],c:0,e:"<code>on: schedule: - cron: '0 * * * *'</code> for top-of-hour runs."},
-  {q:"Role of <code>permissions: { contents: write }</code>?",o:["Default read access","Grants write to GITHUB_TOKEN","Blocks all access","Enforces approvals"],c:1,e:"Explicitly sets token scopes—follows least-privilege security."},
-  {q:"How to trigger on a specific branch?",o:["branches: [main]","paths: ['src/**']","types: [opened]","tags: v*"],c:0,e:"<code>on: push: branches: [main]</code> limits to that branch."},
-  {q:"What enables step debug logging?",o:["secrets.GITHUB_TOKEN","run: | echo '::debug::'","env: ACTIONS_STEP_DEBUG=true","workflow_dispatch"],c:2,e:"Set <code>ACTIONS_STEP_DEBUG: true</code> in repo secrets or env."},
-  {q:"Max retention for artifacts (free tier)?",o:["7 days","30 days","90 days","Unlimited"],c:1,e:"Default 90 days, but free: 7 days; configurable up to 90."},
-  {q:"Difference between reusable workflow vs. action?",o:["Workflow calls other workflows; action is a step","Action is YAML-only","No difference","Workflow can't have inputs"],c:0,e:"Reusable workflows: <code>uses: ./.github/workflows/other.yml</code>; actions are steps."},
-  {q:"How to route jobs to specific runners?",o:["runs-on: self-hosted","labels: [gpu]","Both A and B","env: RUNNER_LABEL"],c:2,e:"<code>runs-on: [self-hosted, gpu]</code> uses labels/groups for targeting."}
-];
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                showSummary();
+                return;
+            }
 
-let current = 0, score = 0;
+            const question = questions[currentQuestion];
+            const questionContainer = document.getElementById('questionContainer');
+            const progress = document.getElementById('progress');
 
-const qtext = document.getElementById('qtext');
-const opts = document.getElementById('opts');
-const fb = document.getElementById('fb');
-const next = document.getElementById('next');
-const bar = document.getElementById('bar');
-const currSpan = document.getElementById('curr');
-const totSpan = document.getElementById('tot');
-const scSpan = document.getElementById('sc');
-const percSpan = document.getElementById('perc');
-totSpan.textContent = questions.length;
+            progress.innerHTML = `Question ${currentQuestion + 1} of ${questions.length}`;
+            
+            questionContainer.innerHTML = `
+                <div class="question-number">Question ${currentQuestion + 1}</div>
+                <div class="question-text">${question.question}</div>
+                <div class="options"></div>
+                <div class="feedback" id="feedback"></div>
+            `;
 
-function showSection(id) {
-  // Hide all sections
-  document.querySelectorAll('section').forEach(s => s.classList.add('d-none'));
-  // Show target
-  document.getElementById(id).classList.remove('d-none');
-  // Update nav active
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.querySelector(`[data-section="${id}"]`).classList.add('active');
-  // Reset quiz if entering
-  if (id === 'quiz') {
-    current = 0;
-    score = 0;
-    loadQuestion();
-  }
-}
-
-function loadQuestion() {
-  const q = questions[current];
-  qtext.innerHTML = `<strong>Q${current + 1}:</strong> ${q.q}`;
-  opts.innerHTML = '';
-  fb.classList.add('d-none');
-  next.disabled = true;
-
-  q.o.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-outline-primary option-btn w-100 mb-2';
-    btn.innerHTML = opt;
-    btn.onclick = () => selectAnswer(i, btn);
-    opts.appendChild(btn);
-  });
-
-  currSpan.textContent = current + 1;
-  bar.style.width = `${((current + 1) / questions.length) * 100}%`;
-}
-
-function selectAnswer(idx, btn) {
-  const q = questions[current];
-  const allBtns = opts.querySelectorAll('button');
-  allBtns.forEach(b => b.disabled = true);
-
-  if (idx === q.c) {
-    score++;
-    btn.classList.replace('btn-outline-primary', 'btn-success');
-    fb.innerHTML = `<strong>Correct!</strong> ${q.e}`;
-    fb.className = 'alert alert-success';
-  } else {
-    btn.classList.replace('btn-outline-primary', 'btn-danger');
-    fb.innerHTML = `<strong>Incorrect.</strong> ${q.e}<br><small>Correct answer: <strong>${q.o[q.c]}</strong></small>`;
-    fb.className = 'alert alert-danger';
-    allBtns[q.c].classList.replace('btn-outline-primary', 'btn-success');
-  }
-  fb.classList.remove('d-none');
-  next.disabled = false;
-}
-
-next.onclick = () => {
-  current++;
-  if (current < questions.length) {
-    loadQuestion();
-  } else {
-    // Show results
-    document.getElementById('quiz-box').classList.add('d-none');
-    document.getElementById('end').classList.remove('d-none');
-    scSpan.textContent = score;
-    percSpan.textContent = Math.round((score / questions.length) * 100);
-  }
-};
-
-// Event listeners (vanilla JS, no jQuery/Bootstrap dependency)
-document.addEventListener('DOMContentLoaded', () => {
-  // Nav clicks
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      const section = link.getAttribute('data-section');
-      showSection(section);
-    });
-  });
-  // Home buttons (already have onclick, but ensure)
-  document.querySelectorAll('button[onclick]').forEach(btn => {
-    // Already handled inline
-  });
-});
-
-// Init
-showSection('home');
-</script>
-</body>
-</html>
+            const optionsContainer = questionContainer.querySelector('.options');
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `<span>A</span><span>B</span><span>C</span><span>D</span>[${index + 1}] ${option}`;
+                optionElement.addEventListener
