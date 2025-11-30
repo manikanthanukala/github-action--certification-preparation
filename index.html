@@ -386,6 +386,630 @@
             },
             {
                 domain: "Domain 1",
+                question: "Which event trigger would you use to run a workflow when a pull request is opened or synchronized?",
+                options: [
+                    "on: push",
+                    "on: pull_request",
+                    "on: workflow_dispatch",
+                    "on: schedule"
+                ],
+                correct: 1,
+                explanation: "The 'pull_request' event trigger runs workflows when pull request activity occurs, including when a PR is opened, synchronized (new commits pushed), reopened, or closed. This is the standard way to run CI/CD checks on pull requests."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you cancel in-progress runs automatically when a new run in the same concurrency group starts?",
+                options: [
+                    "Set cancel-previous: true",
+                    "Set cancel-in-progress: true under concurrency",
+                    "Use if: cancelled()",
+                    "Use needs: latest"
+                ],
+                correct: 1,
+                explanation: "cancel-in-progress: true ensures older runs in the same concurrency group are cancelled."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which expression function returns true if any previous step in the current job failed?",
+                options: [
+                    "success()",
+                    "failure()",
+                    "always()",
+                    "cancelled()"
+                ],
+                correct: 1,
+                explanation: "failure() is true when any earlier step in the job exits with a non-zero code."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What does the always() function do when used in an if condition on a step?",
+                options: [
+                    "Runs only if all previous steps succeeded",
+                    "Runs only if the workflow was manually triggered",
+                    "Runs regardless of previous step or job results",
+                    "Skips if the job is cancelled"
+                ],
+                correct: 2,
+                explanation: "always() ensures the step runs regardless of success, failure, or cancellation."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which of the following is a valid way to refer to the current commit SHA in a workflow?",
+                options: [
+                    "${{ github.sha }}",
+                    "${{ env.sha }}",
+                    "${{ runner.sha }}",
+                    "${{ job.sha }}"
+                ],
+                correct: 0,
+                explanation: "github.sha contains the commit hash that triggered the workflow."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "When using actions/checkout, which input ensures that the full commit history is fetched instead of a shallow clone?",
+                options: [
+                    "fetch-all: true",
+                    "history: full",
+                    "fetch-depth: 0",
+                    "depth: infinite"
+                ],
+                correct: 2,
+                explanation: "Setting fetch-depth: 0 fetches the complete commit history."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which event is used to trigger a workflow when another workflow run completes?",
+                options: [
+                    "workflow_run",
+                    "workflow_call",
+                    "workflow_complete",
+                    "workflow_dispatch"
+                ],
+                correct: 0,
+                explanation: "workflow_run triggers when another workflow is requested or completed."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the main purpose of the workflow_call trigger?",
+                options: [
+                    "To schedule workflows using cron",
+                    "To call reusable workflows from other workflows",
+                    "To manually dispatch a workflow",
+                    "To respond to release events"
+                ],
+                correct: 1,
+                explanation: "workflow_call allows other workflows to invoke this workflow."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you define input parameters for a reusable workflow?",
+                options: [
+                    "Under env",
+                    "Under on.workflow_call.inputs",
+                    "Using with in the caller",
+                    "Under args"
+                ],
+                correct: 1,
+                explanation: "Reusable workflow inputs must be defined under on: workflow_call: inputs:."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which is a correct way for one workflow to call a reusable workflow from the same repository?",
+                options: [
+                    "uses: ./.github/workflows/reusable.yml",
+                    "uses: owner/repo/.github/workflows/reusable.yml@main",
+                    "uses: ./.github/reusable.yml@main",
+                    "uses: workflow/reusable@main"
+                ],
+                correct: 1,
+                explanation: "Reusable workflows must be invoked using the owner/repo syntax with a ref."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which special file is used to pass environment variables between steps within a job?",
+                options: [
+                    "$GITHUB_OUTPUT",
+                    "$GITHUB_ENV",
+                    "$GITHUB_STATE",
+                    "$GITHUB_CONTEXT"
+                ],
+                correct: 1,
+                explanation: "$GITHUB_ENV is used for defining environment variables for later steps."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the main difference between $GITHUB_ENV and $GITHUB_OUTPUT?",
+                options: [
+                    "$GITHUB_ENV is for secrets, $GITHUB_OUTPUT is for logs",
+                    "$GITHUB_ENV sets environment variables, $GITHUB_OUTPUT defines step outputs",
+                    "$GITHUB_ENV is Windows only, $GITHUB_OUTPUT is Linux only",
+                    "They are identical"
+                ],
+                correct: 1,
+                explanation: "$GITHUB_ENV sets environment variables; $GITHUB_OUTPUT publishes step outputs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you avoid accidentally committing personal access tokens or secrets to a repository?",
+                options: [
+                    "Only use public repositories",
+                    "Rely on Git to encrypt them automatically",
+                    "Use .gitignore and GitHub Secrets instead of storing secrets in files",
+                    "Store them in README.md"
+                ],
+                correct: 2,
+                explanation: "Sensitive values must be placed in GitHub Secrets or ignored using .gitignore."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which expression function checks whether the workflow was cancelled?",
+                options: [
+                    "success()",
+                    "failure()",
+                    "cancelled()",
+                    "skipped()"
+                ],
+                correct: 2,
+                explanation: "cancelled() returns true when the workflow or job is cancelled."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "If you want a step to run only when previous steps succeeded, which built-in condition is implied?",
+                options: [
+                    "success()",
+                    "always()",
+                    "failure()",
+                    "cancelled()"
+                ],
+                correct: 0,
+                explanation: "success() is the default behavior—steps run only after previous steps succeed."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the recommended way to authenticate to cloud providers from GitHub Actions without long-lived secrets?",
+                options: [
+                    "Hard-code credentials in workflow",
+                    "Use OpenID Connect (OIDC) with short-lived tokens",
+                    "Commit credentials to private repo",
+                    "Pass credentials via plain env variables"
+                ],
+                correct: 1,
+                explanation: "OIDC allows secure exchange for short-lived cloud provider tokens."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which permission must usually be granted to GITHUB_TOKEN when using OIDC with cloud providers?",
+                options: [
+                    "contents: write",
+                    "id-token: write",
+                    "secrets: read",
+                    "workflows: write"
+                ],
+                correct: 1,
+                explanation: "id-token: write is required to request an OIDC token."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Where do you configure organization-wide secrets for multiple repositories?",
+                options: [
+                    "At the user profile level",
+                    "Organization Settings → Secrets and variables",
+                    "In each individual repository",
+                    "In Git config"
+                ],
+                correct: 1,
+                explanation: "Organization secrets are managed under the organization's secrets settings."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you limit which repositories can access an organization secret?",
+                options: [
+                    "Branch protection",
+                    "Environment rules",
+                    "Select specific repositories when creating the secret",
+                    "Workflow limits"
+                ],
+                correct: 2,
+                explanation: "You can specify which repositories can access an organization secret."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you see detailed logs for a particular step inside a workflow run?",
+                options: [
+                    "Download artifact",
+                    "Open the Actions run and expand job and step to view logs",
+                    "Check README",
+                    "Use git log"
+                ],
+                correct: 1,
+                explanation: "The Actions UI allows step-level log viewing by expanding individual steps."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "If a workflow is not triggering as expected on push, which is NOT a likely cause?",
+                options: [
+                    "Workflow not under .github/workflows/",
+                    "YAML syntax error",
+                    "Repository archived",
+                    "Repository has more than 10 branches"
+                ],
+                correct: 3,
+                explanation: "The number of repository branches does not affect push triggers."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which command-line tool can help you view and manage GitHub Actions workflows from the terminal?",
+                options: [
+                    "git-actions",
+                    "gh (GitHub CLI)",
+                    "hub",
+                    "gha"
+                ],
+                correct: 1,
+                explanation: "The GitHub CLI (gh) supports workflow listing, triggering, and log viewing."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which workflow file key lets you provide a human-readable name shown in the Actions tab?",
+                options: [
+                    "id",
+                    "title",
+                    "name",
+                    "label"
+                ],
+                correct: 2,
+                explanation: "The name field defines the display name of the workflow."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the default behavior when multiple workflows are triggered by the same push event?",
+                options: [
+                    "Only the most recent workflow runs",
+                    "They all run independently",
+                    "Only the first workflow alphabetically runs",
+                    "GitHub randomly selects one"
+                ],
+                correct: 1,
+                explanation: "All workflows matching the trigger will run independently."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which configuration can you use to temporarily disable a workflow without deleting it?",
+                options: [
+                    "enabled: false",
+                    "Comment out the on section or disable it in UI",
+                    "Rename file to .txt",
+                    "Move workflow to another branch"
+                ],
+                correct: 1,
+                explanation: "Commenting out triggers or disabling via UI prevents the workflow from running."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you limit a workflow to run only on pull requests targeting the main branch?",
+                options: [
+                    "on:\n  pull_request:\n    targets: [ main ]",
+                    "on:\n  pull_request:\n    branches: [ main ]",
+                    "on:\n  pull_request:\n    base: main",
+                    "on:\n  pull_request:\n    main: true"
+                ],
+                correct: 1,
+                explanation: "In pull_request triggers, branches refers to the PR's base branch."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a typical use case for pull_request_target?",
+                options: [
+                    "Run code from the PR branch securely",
+                    "Run workflow from base branch in context of PR",
+                    "Schedule workflows",
+                    "Handle release publishing"
+                ],
+                correct: 1,
+                explanation: "pull_request_target runs workflow code from the base branch, allowing safer elevated permissions."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What security risk exists if pull_request_target is misused?",
+                options: [
+                    "It may fail to run on forks",
+                    "It may allow untrusted PR code to execute with high permissions",
+                    "It may slow down builds",
+                    "It disables caching"
+                ],
+                correct: 1,
+                explanation: "Running PR code with elevated permissions risks exposing secrets."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is an ephemeral runner?",
+                options: [
+                    "A runner permanently offline",
+                    "A runner reused across jobs",
+                    "A runner created for a single job and then destroyed",
+                    "A mobile runner"
+                ],
+                correct: 2,
+                explanation: "Ephemeral runners provide clean environments by being destroyed after use."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which is TRUE about GitHub-hosted runners?",
+                options: [
+                    "You can SSH into them",
+                    "They are automatically provisioned and cleaned up by GitHub",
+                    "They persist files between runs",
+                    "They are only for public repos"
+                ],
+                correct: 1,
+                explanation: "GitHub-hosted runners are ephemeral and automatically managed."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you share code (like scripts) across multiple workflows?",
+                options: [
+                    "Copy/paste only",
+                    "Using composite actions or reusable workflows",
+                    "Using artifacts",
+                    "Using environments"
+                ],
+                correct: 1,
+                explanation: "Composite actions and reusable workflows allow code reuse."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which setting sets a job timeout of 10 minutes?",
+                options: [
+                    "timeout: 10",
+                    "timeout-minutes: 10",
+                    "job-timeout: 600",
+                    "max-time: 10"
+                ],
+                correct: 1,
+                explanation: "timeout-minutes controls job runtime limits."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What happens if a job exceeds its configured timeout-minutes?",
+                options: [
+                    "It continues running",
+                    "It is cancelled automatically",
+                    "It restarts",
+                    "It waits for approval"
+                ],
+                correct: 1,
+                explanation: "GitHub Actions cancels jobs that exceed their timeout."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which setting controls maximum concurrency for jobs across a repository?",
+                options: [
+                    "workflow concurrency",
+                    "Billing settings",
+                    "GitHub Actions quota limits",
+                    "max-jobs key"
+                ],
+                correct: 2,
+                explanation: "GitHub imposes concurrency limits at org/account level."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which mechanism is most appropriate for storing CI coverage reports?",
+                options: [
+                    "Secrets",
+                    "Artifacts",
+                    "Environments",
+                    "Schedules"
+                ],
+                correct: 1,
+                explanation: "Artifacts store output files such as coverage reports."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which type of action runs directly on the runner without a container?",
+                options: [
+                    "Docker container action",
+                    "JavaScript action",
+                    "Composite action",
+                    "Workflow action"
+                ],
+                correct: 1,
+                explanation: "JavaScript actions run directly in the runner's Node.js runtime."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Where is the Dockerfile usually located for Docker container actions?",
+                options: [
+                    ".github/workflows/",
+                    "Repository root",
+                    "Same directory as action.yml",
+                    "External registry"
+                ],
+                correct: 2,
+                explanation: "Docker actions place their Dockerfile next to action.yml."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which input type is NOT supported in action.yml?",
+                options: [
+                    "string",
+                    "boolean",
+                    "choice",
+                    "number"
+                ],
+                correct: 2,
+                explanation: "choice is not a built-in type; you must validate choices manually."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you provide input parameters to a custom action in a workflow step?",
+                options: [
+                    "env",
+                    "vars",
+                    "with",
+                    "args"
+                ],
+                correct: 2,
+                explanation: "with: passes inputs defined in action.yml."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which feature allows viewing the fully expanded YAML after matrix or reusable workflow resolution?",
+                options: [
+                    "Download logs",
+                    "View generated YAML",
+                    "View workflow file",
+                    "It is not possible"
+                ],
+                correct: 1,
+                explanation: "GitHub UI shows the expanded workflow file for matrix/reusable workflows."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the recommended way to debug complex workflows?",
+                options: [
+                    "Print secrets for inspection",
+                    "Use echo statements + enable step debug logging",
+                    "Run workflows only on main",
+                    "Disable logs"
+                ],
+                correct: 1,
+                explanation: "Step debug logging and echo outputs help troubleshoot workflow logic."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which variable enables step debug logs when set as a secret?",
+                options: [
+                    "ACTIONS_DEBUG_STEPS",
+                    "GITHUB_DEBUG",
+                    "ACTIONS_STEP_DEBUG",
+                    "ACTIONS_LOG_VERBOSE"
+                ],
+                correct: 2,
+                explanation: "Setting ACTIONS_STEP_DEBUG=true enables verbose step logs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you define custom parameters for a workflow manually triggered via workflow_dispatch?",
+                options: [
+                    "with",
+                    "inputs under workflow_dispatch",
+                    "env",
+                    "vars"
+                ],
+                correct: 1,
+                explanation: "workflow_dispatch supports named inputs for manual runs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which is a correct example of defining a string input named environment?",
+                options: [
+                    "on:\n workflow_dispatch:\n env: environment",
+                    "on:\n workflow_dispatch:\n  inputs:\n    environment:\n      description: 'Target environment'\n      required: true\n      type: string",
+                    "on:\n workflow_dispatch:\n with:\n  environment: string",
+                    "on:\n dispatch:\n  environment: string"
+                ],
+                correct: 1,
+                explanation: "workflow_dispatch inputs must be declared under inputs: with type, description, and required."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you access a workflow_dispatch input named environment inside a job?",
+                options: [
+                    "${{ inputs.environment }}",
+                    "${{ github.event.inputs.environment }}",
+                    "${{ env.environment }}",
+                    "${{ vars.environment }}"
+                ],
+                correct: 1,
+                explanation: "workflow_dispatch inputs are accessible under github.event.inputs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which status badge can you embed in a README to show workflow status?",
+                options: [
+                    "GitHub Workflow Status Badge",
+                    "Actions Runner Badge",
+                    "GitHub Checks Badge",
+                    "Git Status Badge"
+                ],
+                correct: 0,
+                explanation: "GitHub provides workflow status badges to embed in READMEs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the effect of specifying continue-on-error: true on a step?",
+                options: [
+                    "Step is skipped",
+                    "Step runs twice",
+                    "Step failure does not fail the job",
+                    "Step is retried until success"
+                ],
+                correct: 2,
+                explanation: "continue-on-error allows the job to continue even if that step fails."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you conditionally skip an entire job if triggered by a specific user?",
+                options: [
+                    "Use if on each step",
+                    "Use if at job level with github.actor",
+                    "Use needs at workflow level",
+                    "It is not possible"
+                ],
+                correct: 1,
+                explanation: "Jobs support if conditions, including checking github.actor."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which statement is TRUE about self-hosted runner logs?",
+                options: [
+                    "Logs are only stored on the runner",
+                    "Logs are uploaded to GitHub and visible in Actions UI",
+                    "Logs cannot be accessed",
+                    "Logs must be manually uploaded"
+                ],
+                correct: 1,
+                explanation: "GitHub uploads logs even from self-hosted runners."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the effect of adding a label to a self-hosted runner and referencing it in runs-on?",
+                options: [
+                    "Changes runner OS",
+                    "Targets only runners with that label",
+                    "Disables all other runners",
+                    "Creates a GitHub-hosted runner"
+                ],
+                correct: 1,
+                explanation: "runs-on: [self-hosted, label] ensures only matching runners are used."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a good strategy to limit the impact of a compromised self-hosted runner?",
+                options: [
+                    "Give it admin access",
+                    "Reuse runner across many repos",
+                    "Isolate per repo and rebuild frequently",
+                    "Disable runner logs"
+                ],
+                correct: 2,
+                explanation: "Self-hosted runners should be isolated and rebuilt regularly to minimize security risk."
+            },
+            {
+                domain: "Domain 1",
+                question: "What is the correct syntax to reference a secret in a GitHub Actions workflow?",
+                options: [
+                    "${{ env.MY_SECRET }}",
+                    "${{ secrets.MY_SECRET }}",
+                    "${{ vars.MY_SECRET }}",
+                    "${MY_SECRET}"
+                ],
+                correct: 1,
+                explanation: "Secrets are accessed using the ${{ secrets.SECRET_NAME }} syntax. This ensures secure access to sensitive data like API keys and passwords. Regular environment variables use ${{ env.VAR_NAME }} and configuration variables use ${{ vars.VAR_NAME }}."
+            },
+            {
+                domain: "Domain 1",
                 question: "What is the correct syntax to reference a secret in a GitHub Actions workflow?",
                 options: [
                     "${{ env.MY_SECRET }}",
