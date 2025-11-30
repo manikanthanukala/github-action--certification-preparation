@@ -301,7 +301,7 @@
                     </div>
                     <div class="info-item">
                         <div class="label">Questions</div>
-                        <div class="value">70-75</div>
+                        <div class="value">75</div>
                     </div>
                     <div class="info-item">
                         <div class="label">Scored Questions</div>
@@ -338,7 +338,7 @@
                 
                 <div class="question-card">
                     <div class="question-header">
-                        <span id="questionNumber">Question 1 of 10</span>
+                        <span id="questionNumber">Question 1 of 75</span>
                         <span id="domain">Domain 1</span>
                     </div>
                     
@@ -370,7 +370,8 @@
     </div>
 
     <script>
-        const questions = [
+        // Master question bank (put ALL your questions here: 75+)
+        const allQuestions = [
             {
                 domain: "Domain 1",
                 question: "Which event trigger would you use to run a workflow when a pull request is opened or synchronized?",
@@ -456,16 +457,580 @@
                 explanation: "Self-hosted runners are machines that you set up and manage yourself. They connect to GitHub and can run workflows for your repositories. This gives you more control over the hardware, software, and security configuration compared to GitHub-hosted runners."
             },
             {
-                domain: "Domain 1",
-                question: "Which context provides information about the workflow run, such as run_id and run_number?",
+                domain: "GitHub Actions",
+                question: "Which statement best describes GitHub Actions?",
                 options: [
-                    "${{ env }}",
-                    "${{ job }}",
-                    "${{ github }}",
-                    "${{ runner }}"
+                    "A separate CI/CD server that must be installed on-premises",
+                    "A cloud-native CI/CD and automation platform built directly into GitHub",
+                    "A package manager used to install dependencies",
+                    "A Git client used to clone repositories"
+                ],
+                correct: 1,
+                explanation: "GitHub Actions is an automation and CI/CD platform integrated directly into GitHub that runs workflows based on repository events."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "In a GitHub Actions workflow file, which top-level key is used to define when the workflow should run?",
+                options: [
+                    "runs-on",
+                    "env",
+                    "on",
+                    "jobs"
                 ],
                 correct: 2,
-                explanation: "The github context contains information about the workflow run, repository, and the event that triggered the workflow. It includes properties like github.run_id, github.run_number, github.actor, and github.repository."
+                explanation: "The top-level on key defines which events (push, pull_request, schedule, etc.) will trigger the workflow."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the correct default location and file extension for a GitHub Actions workflow?",
+                options: [
+                    ".github/workflows/main.json",
+                    ".github/actions/workflow.yml",
+                    ".github/workflows/.yml or .yaml",
+                    "workflows/.github/.yml"
+                ],
+                correct: 2,
+                explanation: "Workflow files must live under .github/workflows/ and typically use .yml or .yaml extensions."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "In a workflow, which key defines the virtual machine or environment where a job will run?",
+                options: [
+                    "environment",
+                    "runner",
+                    "machine",
+                    "runs-on"
+                ],
+                correct: 3,
+                explanation: "The runs-on key at job level specifies the runner label such as ubuntu-latest, windows-latest, or macos-latest."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a job in GitHub Actions?",
+                options: [
+                    "A single shell command that runs on a runner",
+                    "A set of steps executed on the same runner environment",
+                    "A configuration file that defines events",
+                    "A container registry used for deployment"
+                ],
+                correct: 1,
+                explanation: "A job is a collection of steps that run sequentially on the same runner; jobs themselves can run in parallel or depend on others."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which key is used inside a job to define the list of commands or actions to execute?",
+                options: [
+                    "scripts",
+                    "tasks",
+                    "steps",
+                    "actions"
+                ],
+                correct: 2,
+                explanation: "The steps section of a job lists each individual run or uses block that will execute on the runner."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "In a workflow step, which attribute lets you execute a shell command directly?",
+                options: [
+                    "exec",
+                    "command",
+                    "shell",
+                    "run"
+                ],
+                correct: 3,
+                explanation: "The run keyword allows you to execute shell commands such as npm test or echo statements inside a step."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which of the following correctly uses a marketplace action in a step?",
+                options: [
+                    "use: actions/checkout@v4",
+                    "run: actions/checkout@v4",
+                    "uses: actions/checkout@v4",
+                    "with: actions/checkout@v4"
+                ],
+                correct: 2,
+                explanation: "To reference a prebuilt action you use the uses keyword, for example uses: actions/checkout@v4."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What does the actions/checkout action primarily do in a workflow?",
+                options: [
+                    "Installs Node.js",
+                    "Checks out your repository’s code into the runner",
+                    "Uploads artifacts",
+                    "Manages GitHub secrets"
+                ],
+                correct: 1,
+                explanation: "actions/checkout clones the repository onto the runner so subsequent steps can access the code."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which event trigger would you use to run a workflow manually from the GitHub UI?",
+                options: [
+                    "push",
+                    "pull_request",
+                    "workflow_run",
+                    "workflow_dispatch"
+                ],
+                correct: 3,
+                explanation: "workflow_dispatch enables manual runs from the Actions tab and can accept input parameters."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which event is most appropriate if you want to run CI tests whenever code is pushed to any branch?",
+                options: [
+                    "schedule",
+                    "workflow_call",
+                    "push",
+                    "release"
+                ],
+                correct: 2,
+                explanation: "The push event fires whenever commits are pushed to a branch, making it ideal for CI builds."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you restrict a push-triggered workflow to only run on the main branch?",
+                options: [
+                    "on: [ main ]",
+                    "on:\n  branches: [ main ]",
+                    "on:\n  push:\n    branches: [ main ]",
+                    "on:\n  push:\n    main: true"
+                ],
+                correct: 2,
+                explanation: "You scope the push trigger with branches: [ main ] under on: push so it runs only when main is updated."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which event is typically used to run checks on pull requests before merging?",
+                options: [
+                    "pull_request",
+                    "fork",
+                    "deployment",
+                    "release"
+                ],
+                correct: 0,
+                explanation: "The pull_request event triggers workflows when PRs are opened or updated so you can run tests and validations."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a runner in GitHub Actions terminology?",
+                options: [
+                    "A secret that stores tokens",
+                    "A virtual machine or container environment that executes jobs",
+                    "A YAML file that defines workflows",
+                    "A third-party integration"
+                ],
+                correct: 1,
+                explanation: "A runner is the machine (GitHub-hosted or self-hosted) that executes the jobs defined in your workflows."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which of the following is a valid GitHub-hosted runner label?",
+                options: [
+                    "ubuntu-newest",
+                    "linux-latest",
+                    "ubuntu-latest",
+                    "ubuntu-22"
+                ],
+                correct: 2,
+                explanation: "ubuntu-latest is an official label for a GitHub-hosted Ubuntu LTS image."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Why might you choose a self-hosted runner instead of a GitHub-hosted runner?",
+                options: [
+                    "To avoid using YAML workflows",
+                    "To run jobs only on Windows",
+                    "To have full control over hardware, software, and network environment",
+                    "To disable caching in workflows"
+                ],
+                correct: 2,
+                explanation: "Self-hosted runners give you full control over installed tools, hardware, and network, useful for specialized or restricted environments."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Where do you configure repository-level secrets in GitHub?",
+                options: [
+                    "Settings → General → Webhooks",
+                    "Settings → Actions → Runners",
+                    "Settings → Secrets and variables → Actions → Secrets",
+                    "Actions tab → Secrets panel"
+                ],
+                correct: 2,
+                explanation: "Repository secrets are configured under Settings → Secrets and variables → Actions for that repo."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How should you reference a secret named API_TOKEN in a workflow?",
+                options: [
+                    "${{ github.API_TOKEN }}",
+                    "${{ env.API_TOKEN }}",
+                    "${{ secrets.API_TOKEN }}",
+                    "${{ vars.API_TOKEN }}"
+                ],
+                correct: 2,
+                explanation: "Secrets are exposed via the secrets context, so API_TOKEN is referenced as ${{ secrets.API_TOKEN }}."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How can you define environment variables that apply to all jobs in a workflow?",
+                options: [
+                    "Under jobs.env",
+                    "Under global.env",
+                    "Under workflow.env",
+                    "Under top-level env"
+                ],
+                correct: 3,
+                explanation: "Defining env at the top level of the workflow YAML makes those variables available to all jobs and steps."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which context provides information such as repository name, workflow name, and event type?",
+                options: [
+                    "env",
+                    "job",
+                    "github",
+                    "runner"
+                ],
+                correct: 2,
+                explanation: "The github context exposes metadata about the run such as repo, ref, event_name, and workflow."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the purpose of the needs keyword at the job level?",
+                options: [
+                    "To pass secrets between jobs",
+                    "To require manual approval before running",
+                    "To specify job dependencies and control execution order",
+                    "To request more CPU resources for a job"
+                ],
+                correct: 2,
+                explanation: "needs lets you express job dependencies so one job waits for another to finish successfully before running."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "If job2 has needs: job1, how do the jobs run?",
+                options: [
+                    "job1 and job2 run in parallel",
+                    "job2 runs only if job1 fails",
+                    "job2 runs only after job1 completes successfully",
+                    "job2 cancels job1"
+                ],
+                correct: 2,
+                explanation: "A job with needs: job1 will start only after job1 completes successfully; if job1 fails, job2 is skipped."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the default behavior if a step in a job fails with a non-zero exit code?",
+                options: [
+                    "Only that step is marked as failed, but the job continues",
+                    "The current job fails and remaining steps are skipped",
+                    "All workflows in the repository are disabled",
+                    "The failure is ignored by default"
+                ],
+                correct: 1,
+                explanation: "By default, a failing step causes the job to fail and subsequent steps in that job are skipped unless continue-on-error is used."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which syntax correctly adds a condition so a step runs only on the main branch?",
+                options: [
+                    "if: github.event == 'main'",
+                    "if: github.ref == 'refs/heads/main'",
+                    "if: branch == 'main'",
+                    "if: github.branch == 'main'"
+                ],
+                correct: 1,
+                explanation: "github.ref contains the full ref string, so comparing it to 'refs/heads/main' restricts execution to that branch."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What does the expression syntax ${{ ... }} represent in GitHub Actions?",
+                options: [
+                    "A YAML comment",
+                    "A shell variable",
+                    "An expression that is evaluated by the GitHub Actions runner",
+                    "A JSON object"
+                ],
+                correct: 2,
+                explanation: "Expressions wrapped in ${{ }} are evaluated by the Actions runner using contexts and functions."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you define a matrix strategy to test with multiple Node.js versions?",
+                options: [
+                    "Using with: matrix",
+                    "Using strategy: node",
+                    "Using strategy.matrix",
+                    "Using env.matrix"
+                ],
+                correct: 2,
+                explanation: "You configure strategy: matrix: and then define keys such as node-version to create a build matrix."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which of the following is a correct minimal example of a matrix strategy?",
+                options: [
+                    "strategy:\n  build: [a, b]",
+                    "matrix:\n  os: [ubuntu-latest, windows-latest]",
+                    "strategy:\n  matrix:\n    os: [ubuntu-latest, windows-latest]",
+                    "strategy:\n  os:\n    matrix: [ubuntu-latest, windows-latest]"
+                ],
+                correct: 2,
+                explanation: "A matrix strategy must be defined under strategy: matrix:, with each axis defined as a list."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the purpose of the actions/cache action?",
+                options: [
+                    "To store secrets securely",
+                    "To cache dependencies or build outputs to speed up subsequent runs",
+                    "To store workflow logs permanently",
+                    "To create Docker images"
+                ],
+                correct: 1,
+                explanation: "actions/cache saves and restores directories like dependency folders to reduce build time on later runs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which feature is used to store files produced by a workflow and make them downloadable from the UI?",
+                options: [
+                    "Secrets",
+                    "Artifacts",
+                    "Matrices",
+                    "Environments"
+                ],
+                correct: 1,
+                explanation: "Artifacts are uploaded files from a workflow run that can be downloaded later from the Actions run page."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you upload an artifact named build-output from the dist folder?",
+                options: [
+                    "uses: actions/cache@v4\n  with:\n    name: build-output\n    path: dist",
+                    "uses: actions/upload-artifact@v4\n  with:\n    name: build-output\n    path: dist",
+                    "uses: actions/store@v1\n  with:\n    target: dist",
+                    "uses: actions/artifact@v1\n  with:\n    folder: dist"
+                ],
+                correct: 1,
+                explanation: "actions/upload-artifact@v4 with name and path uploads the dist directory as an artifact called build-output."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which GitHub Actions feature allows you to reuse an entire workflow from another file or repository?",
+                options: [
+                    "Composite action",
+                    "Reusable workflow called with workflow_call",
+                    "Artifacts",
+                    "Checks"
+                ],
+                correct: 1,
+                explanation: "Reusable workflows use the workflow_call trigger and can be invoked from other workflows via uses."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a composite action?",
+                options: [
+                    "A workflow that triggers other workflows",
+                    "An action that combines multiple steps and can be reused like a single action",
+                    "A special artifact type",
+                    "A template for job matrices"
+                ],
+                correct: 1,
+                explanation: "Composite actions bundle several run/uses steps into a reusable action defined with action.yml."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which file is required to define a custom action in a repository?",
+                options: [
+                    "workflow.yml",
+                    "action.yaml or action.yml",
+                    "config.json",
+                    "package.json only"
+                ],
+                correct: 1,
+                explanation: "Custom actions are described by a metadata file named action.yml or action.yaml."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which of the following is NOT a supported type of custom GitHub Action?",
+                options: [
+                    "JavaScript action",
+                    "Docker container action",
+                    "Composite action",
+                    "Bash-only action type"
+                ],
+                correct: 3,
+                explanation: "GitHub supports JavaScript, Docker, and composite actions; there is no separate Bash-only action type."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which event lets you schedule a workflow to run at a specific time using cron syntax?",
+                options: [
+                    "schedule",
+                    "cron",
+                    "time_trigger",
+                    "timer"
+                ],
+                correct: 0,
+                explanation: "The schedule event uses cron expressions to trigger workflows at defined times."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "In a schedule trigger, which field contains the cron expression?",
+                options: [
+                    "cron",
+                    "schedule",
+                    "rate",
+                    "expression"
+                ],
+                correct: 0,
+                explanation: "Under on: schedule you specify - cron: '…' to define when the workflow runs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you make a workflow run only when files in a specific path change on push?",
+                options: [
+                    "Use if: changedFiles == 'path/'",
+                    "Configure paths under the push event",
+                    "Use needs with the path filter",
+                    "Define filters in the job level only"
+                ],
+                correct: 1,
+                explanation: "You can use on: push: paths: ['path/**'] so the workflow only triggers when those files change."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which context would you use to access a job’s status (for example, success or failure) in a later job?",
+                options: [
+                    "job",
+                    "steps",
+                    "needs",
+                    "runner"
+                ],
+                correct: 2,
+                explanation: "The needs context exposes information and result status for jobs that the current job depends on."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you expose an output from one job so that another job can consume it?",
+                options: [
+                    "Use job.outputs and step outputs written via GITHUB_OUTPUT",
+                    "Use env and secrets contexts",
+                    "Use artifacts only",
+                    "Use actions/cache"
+                ],
+                correct: 0,
+                explanation: "A job declares outputs mapped from step outputs; steps write outputs to $GITHUB_OUTPUT, and dependent jobs read them via needs."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which new mechanism is recommended over the deprecated set-output command for step outputs?",
+                options: [
+                    "Writing to $GITHUB_ENV",
+                    "Writing to $GITHUB_OUTPUT",
+                    "Using env: in the workflow",
+                    "Using artifacts"
+                ],
+                correct: 1,
+                explanation: "GitHub now recommends appending name=value lines to the file pointed to by GITHUB_OUTPUT."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the purpose of the permissions field at the workflow or job level?",
+                options: [
+                    "To manage UNIX file permissions in the runner",
+                    "To define minimal token scopes for GITHUB_TOKEN",
+                    "To set environment variable access",
+                    "To manage repository collaborators"
+                ],
+                correct: 1,
+                explanation: "permissions configures which scopes the GITHUB_TOKEN has, enforcing least-privilege access."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which token is automatically created by GitHub for each workflow run and can access the repository?",
+                options: [
+                    "PERSONAL_ACCESS_TOKEN",
+                    "GITHUB_ACCESS",
+                    "GITHUB_TOKEN",
+                    "ACTIONS_TOKEN"
+                ],
+                correct: 2,
+                explanation: "GITHUB_TOKEN is an automatically generated token scoped to the repository for each workflow run."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is a common security best practice when using GITHUB_TOKEN?",
+                options: [
+                    "Grant it admin rights for convenience",
+                    "Disable it for all jobs",
+                    "Restrict its permissions to the minimum required",
+                    "Store it in plaintext in the repo"
+                ],
+                correct: 2,
+                explanation: "Following least privilege, you should grant GITHUB_TOKEN only the permissions workflows actually need."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which GitHub feature adds additional protection, such as required reviewers and secrets, for deployments to sensitive targets like production?",
+                options: [
+                    "Branch protection",
+                    "Environments",
+                    "Checks",
+                    "Code owners"
+                ],
+                correct: 1,
+                explanation: "Environments like staging or production can define protection rules and environment-scoped secrets."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "How do you target an environment named production in a job?",
+                options: [
+                    "env: production",
+                    "uses: production",
+                    "environment: production",
+                    "runs-on: production"
+                ],
+                correct: 2,
+                explanation: "You specify environment: production at job level to associate it with that configured environment."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is stored in environment secrets compared to repository secrets?",
+                options: [
+                    "Only workflow names",
+                    "Secrets scoped to a specific environment such as staging or production",
+                    "Secrets visible in the Actions logs",
+                    "Secrets that are automatically committed to the repo"
+                ],
+                correct: 1,
+                explanation: "Environment secrets apply only to jobs targeting that environment, allowing different credentials per environment."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "Which feature lets you require a manual approval before a job that targets an environment can run?",
+                options: [
+                    "Branch rules",
+                    "Protection rules on the environment",
+                    "Required checks",
+                    "Schedulers"
+                ],
+                correct: 1,
+                explanation: "Environment protection rules can require reviewers to approve deployments before jobs execute."
+            },
+            {
+                domain: "GitHub Actions",
+                question: "What is the recommended way to prevent secrets from leaking in logs?",
+                options: [
+                    "Avoid using secrets in workflows",
+                    "Use echo to print secrets for debugging",
+                    "Rely on GitHub’s automatic secret masking and never print raw secrets",
+                    "Use plain text instead of secrets"
+                ],
+                correct: 2,
+                explanation: "GitHub masks secret values in logs; you should avoid printing them and use them only where needed."
             },
             {
                 domain: "Domain 2",
@@ -478,7 +1043,13 @@
                 ],
                 correct: 1,
                 explanation: "The 'if' conditional allows you to control whether jobs or steps execute based on expressions. For example, 'if: github.ref == 'refs/heads/main'' runs only on the main branch. This enables conditional workflow logic."
-            },
+            }
+
+
+
+
+            
+
             {
                 domain: "Domain 4",
                 question: "Which permission is required to create and manage GitHub Actions workflows in a repository?",
@@ -491,31 +1062,100 @@
                 correct: 2,
                 explanation: "Write access (or higher) is required to create, edit, and manage workflow files in a repository. This permission level allows users to commit .github/workflows files and modify repository settings related to Actions."
             }
+
+            // 👉 Add the rest of your questions here until you have at least 75
+            // {
+            //   domain: "Domain X",
+            //   question: "...",
+            //   options: ["A", "B", "C", "D"],
+            //   correct: 0,
+            //   explanation: "..."
+            // },
         ];
 
+        const QUESTIONS_PER_TEST = 75; // questions per attempt
+
+        let examQuestions = [];        // questions used in the current test
         let currentQuestion = 0;
         let score = 0;
         let answered = false;
         let userAnswers = [];
+        let usedQuestionIndices = new Set(); // tracks which questions from allQuestions have already been used
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function buildExamQuestions() {
+            const totalQuestions = allQuestions.length;
+            const needed = Math.min(QUESTIONS_PER_TEST, totalQuestions);
+
+            const unusedIndices = [];
+            const allIndices = [];
+
+            for (let i = 0; i < totalQuestions; i++) {
+                allIndices.push(i);
+                if (!usedQuestionIndices.has(i)) {
+                    unusedIndices.push(i);
+                }
+            }
+
+            shuffleArray(unusedIndices);
+            shuffleArray(allIndices);
+
+            const selectedIndices = [];
+
+            // Use unused (remaining) questions first
+            for (let i = 0; i < unusedIndices.length && selectedIndices.length < needed; i++) {
+                selectedIndices.push(unusedIndices[i]);
+            }
+
+            // If not enough, fill from full pool
+            for (let i = 0; i < allIndices.length && selectedIndices.length < needed; i++) {
+                if (!selectedIndices.includes(allIndices[i])) {
+                    selectedIndices.push(allIndices[i]);
+                }
+            }
+
+            // Mark selected as used
+            selectedIndices.forEach(idx => usedQuestionIndices.add(idx));
+
+            // Build exam questions from indices
+            examQuestions = selectedIndices.map(i => allQuestions[i]);
+        }
 
         function startExam() {
+            buildExamQuestions();
+
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            userAnswers = [];
+
             document.getElementById('examInfo').style.display = 'none';
+            document.getElementById('scoreContainer').style.display = 'none';
             document.getElementById('quizContainer').style.display = 'block';
+
             loadQuestion();
         }
 
         function loadQuestion() {
-            const q = questions[currentQuestion];
+            const q = examQuestions[currentQuestion];
             answered = false;
-            
-            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+            document.getElementById('questionNumber').textContent =
+                `Question ${currentQuestion + 1} of ${examQuestions.length}`;
             document.getElementById('domain').textContent = q.domain;
             document.getElementById('questionText').textContent = q.question;
             document.getElementById('explanation').classList.remove('show');
-            
+
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = '';
-            
+
             q.options.forEach((option, index) => {
                 const li = document.createElement('li');
                 li.className = 'option';
@@ -523,18 +1163,18 @@
                 li.onclick = () => selectAnswer(index);
                 optionsList.appendChild(li);
             });
-            
+
             updateProgress();
             updateNavButtons();
         }
 
         function selectAnswer(index) {
             if (answered) return;
-            
+
             answered = true;
-            const q = questions[currentQuestion];
+            const q = examQuestions[currentQuestion];
             const options = document.querySelectorAll('.option');
-            
+
             options.forEach((opt, i) => {
                 if (i === q.correct) {
                     opt.classList.add('correct');
@@ -544,19 +1184,19 @@
                 }
                 opt.style.cursor = 'default';
             });
-            
+
             if (index === q.correct) {
                 score++;
             }
-            
+
             userAnswers[currentQuestion] = index;
-            
+
             document.getElementById('explanationText').textContent = q.explanation;
             document.getElementById('explanation').classList.add('show');
         }
 
         function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
+            if (currentQuestion < examQuestions.length - 1) {
                 currentQuestion++;
                 loadQuestion();
             } else {
@@ -572,23 +1212,23 @@
         }
 
         function updateProgress() {
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            const progress = ((currentQuestion + 1) / examQuestions.length) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
         }
 
         function updateNavButtons() {
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').textContent = 
-                currentQuestion === questions.length - 1 ? 'Finish' : 'Next';
+            document.getElementById('nextBtn').textContent =
+                currentQuestion === examQuestions.length - 1 ? 'Finish' : 'Next';
         }
 
         function showScore() {
             document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('scoreContainer').style.display = 'block';
-            
-            const percentage = Math.round((score / questions.length) * 100);
+
+            const percentage = Math.round((score / examQuestions.length) * 100);
             document.getElementById('finalScore').textContent = percentage + '%';
-            
+
             let message = '';
             if (percentage >= 75) {
                 message = '🎉 Excellent! You would pass the actual exam (75% required)';
@@ -597,29 +1237,19 @@
             } else {
                 message = '💪 Keep practicing! Review the domains and try again';
             }
-            
-            document.getElementById('scoreMessage').textContent = 
-                `You answered ${score} out of ${questions.length} questions correctly. ${message}`;
+
+            document.getElementById('scoreMessage').textContent =
+                `You answered ${score} out of ${examQuestions.length} questions correctly. ${message}`;
         }
 
         function restartExam() {
-            currentQuestion = 0;
-            score = 0;
-            answered = false;
-            userAnswers = [];
-            
-            document.getElementById('scoreContainer').style.display = 'none';
-            document.getElementById('quizContainer').style.display = 'block';
-            loadQuestion();
+            // Retry: get a new shuffled set, preferring remaining questions
+            startExam();
         }
 
         function showInfo() {
-            currentQuestion = 0;
-            score = 0;
-            answered = false;
-            userAnswers = [];
-            
             document.getElementById('scoreContainer').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('examInfo').style.display = 'block';
         }
     </script>
